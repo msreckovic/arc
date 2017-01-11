@@ -1,0 +1,209 @@
+body {
+#  background-color: rgb(200,218,206);
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+}
+
+#boats th {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+  text-align: left;
+}
+
+#boats td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+}
+
+#boats td h4 {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+}
+
+#boats td ul {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+
+  list-style-type: none;
+  line-height: 16px;
+  padding: 0;
+  margin: 0;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 11px;
+}
+
+#schedule th {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+
+  vertical-align: top;
+  border-style: none;
+  border-bottom: solid thin #aaaaaa;
+  padding: 10px 0px 0px 0px;
+}
+
+#schedule td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+
+  vertical-align: top;
+  border-style: none;
+  border-bottom: solid thin #aaaaaa;
+  padding: 10px 0px 0px 0px;
+}
+
+#schedule td ul {
+  list-style-type: none;
+  line-height: 16px;
+  padding: 0;
+  margin: 0;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 11px;
+}
+
+#captains th {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+  text-align: left;
+}
+
+#captains td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+}
+
+#captains td h4 {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #002147;
+  vertical-align: top;
+}
+
+#captains td ul {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+
+  list-style-type: none;
+  line-height: 16px;
+  padding: 0;
+  margin: 0;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 11px;
+}
+
+.redClassARC {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  color: #FF0000;
+}
+
+.normalClassARC {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+}
+
+h4 a:link {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+  color: rgb(255,0,0);
+}
+
+h4 a:visited {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+  color: rgb(255,0,0);
+}
+
+.blue {
+  color: rgb(0,0,255);
+}
+
+.yellow {
+  color: gray;
+}
+
+.totals {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 8px;
+  text-align: left;
+}
+
+.email {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+#  background-color: #002147;
+#  color: rgb(200,218,206);
+  text-align: center;
+}
+
+.email td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.email a:link {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+#  color: rgb(200,218,206);
+}
+
+.email a:visited {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+}
+
+.email a:hover {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+  color: yellow;
+}
+
+#logo {
+  text-indent:-9999em;
+  width:400px;
+  height: 62px;
+  background-image:url(images/arcLogo.png);
+  background-repeat:no-repeat;
+  padding-top:1em;        
+}
+
+#legend {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 9px;
+  text-align: left;
+}
+
+#stats {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  color: red;
+}
+
+#header td ul {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#legend td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  line-height: 16px;
+}

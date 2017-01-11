@@ -1,0 +1,40 @@
+th {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+  vertical-align: top;
+  border-style: none;
+  border-bottom: solid thin #aaaaaa;
+  padding: 0px 0px 20px 0px;
+}
+
+td {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  color: #002147;
+  vertical-align: top;
+  border-style: none;
+
+  border-left: dashed thin #aaaaaa;
+  border-bottom: solid thin #aaaaaa;
+  padding: 2px 0px 2px 1px;
+  text-align :center;
+
+  font-size: 12px;
+}
+
+.special {
+  font-weight: bold;
+}
+
+.end {
+  border-right: dashed thin #aaaaaa;
+}
+
+.middlenote {
+  text-align: center;
+  font-size: 10px;
+  color: rgb(50,50,50);
+}
+
+.red {
+  color: rgb(255,0,0);
+}

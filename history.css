@@ -1,0 +1,124 @@
+body {
+  font-family: "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  background-color: rgb(200,218,206);
+  color: #002147;
+}
+
+#boats th {
+  vertical-align: top;
+  text-align: left;
+}
+
+#boats td {
+  vertical-align: top;
+}
+
+#boats td ul {
+  list-style-type: none;
+  line-height: 16px;
+  padding: 0;
+  margin: 0;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 11px;
+}
+
+#schedule th {
+  vertical-align: top;
+  border-style: none;
+  border-bottom: solid thin #aaaaaa;
+  padding: 10px 0px 0px 0px;
+}
+
+#schedule td {
+  vertical-align: top;
+  border-style: none;
+  border-bottom: solid thin #aaaaaa;
+  padding: 10px 0px 0px 0px;
+}
+
+#schedule td ul {
+  list-style-type: none;
+  line-height: 16px;
+  padding: 0;
+  margin: 0;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 11px;
+}
+
+.whatBookedNotOut {
+}
+.whatBookedOut {
+}
+.whatNotBookedOut {
+}
+
+.redClassARC {
+  color: rgb(255,0,0);
+}
+
+.blue {
+  color: rgb(0,0,255);
+}
+
+.yellow {
+  color: gray;
+}
+
+.totals {
+  font-size: 8px;
+  text-align: left;
+}
+
+.email {
+  background-color: #002147;
+  color: rgb(200,218,206);
+  text-align: center;
+}
+
+.email td {
+  padding: 0;
+  margin: 0;
+}
+
+.email a:link {
+  text-decoration: none;
+  color: rgb(200,218,206);
+}
+
+.email a:visited {
+}
+
+.email a:hover {
+  text-decoration: underline;
+  color: yellow;
+}
+
+#logo {
+  text-indent:-9999em;
+  width:400px;
+  height: 62px;
+  background-image:url(images/arcLogo.gif);
+  background-repeat:no-repeat;
+  padding-top:1em;        
+}
+
+#legend {
+  font-size: 9px;
+  text-align: left;
+}
+
+#stats {
+  font-size: 14px;
+  color: red;
+}
+
+#header td ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#legend td {
+  line-height: 16px;
+}
