@@ -29,9 +29,21 @@ body {
   text-align: left;
 }
 
+#trip .addresssmall {
+  font-size: 8px;
+  text-align: left;
+  color: #999999;
+}
+
 #trip .city {
   font-size: 18px;
   text-align: left;
+}
+
+#trip .citysmall {
+  font-size: 10px;
+  text-align: left;
+  color: #999999;
 }
 
 #trip .totals {
@@ -45,6 +57,11 @@ body {
 
 #trip .eff {
   font-size: 28px;
+}
+
+#trip .faded {
+  font-size: 14px;
+  color: #999999;
 }
 
 .warn {

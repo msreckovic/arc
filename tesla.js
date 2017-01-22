@@ -1,8 +1,8 @@
 AllTheTrips =
 [ {"fTripName" : "",
-	 "fTripCities" : "",
-	 "fTripDate" : "",
-	 "fTripTemp" : "",
+   "fTripCities" : "",
+   "fTripDate" : "",
+   "fTripTemp" : "",
    "fTripLegs" : []
 		},
 ];
@@ -143,24 +143,24 @@ function TripStart(entry)
 
 function TripLeg(entry)
 {
-    return   [GetValue(entry,map[0]),
-		GetValue(entry,map[1]),
-		GetValue(entry,map[2]),
-		GetKm(entry,map[3]),
-		GetKm(entry,map[4]),
-		GetKm(entry,map[5]),
-		GetValue(entry,map[6]),
-		GetValue(entry,map[7]),
-		GetKm(entry,map[8]),
-		GetValue(entry,map[9]),
-		GetKm(entry,map[10]),
-		GetValue(entry,map[11]),
-		GetValue(entry,map[12]),
-		GetKm(entry,map[13]),
-		GetValue(entry,map[14]),
-		GetKm(entry,map[15]),
-		GetKm(entry,map[16]),
-		];
+    return [GetValue(entry,map[0]),
+	    GetValue(entry,map[1]),
+	    GetValue(entry,map[2]),
+	    GetKm(entry,map[3]),
+	    GetKm(entry,map[4]),
+	    GetKm(entry,map[5]),
+	    GetValue(entry,map[6]),
+	    GetValue(entry,map[7]),
+	    GetKm(entry,map[8]),
+	    GetValue(entry,map[9]),
+	    GetKm(entry,map[10]),
+	    GetValue(entry,map[11]),
+	    GetValue(entry,map[12]),
+	    GetKm(entry,map[13]),
+	    GetValue(entry,map[14]),
+	    GetKm(entry,map[15]),
+	    GetKm(entry,map[16]),
+	   ];
 }
 
 function TeslaTrips(jsonIn)
@@ -173,7 +173,7 @@ function TeslaTrips(jsonIn)
     //console.log("Found " + entries.length + " entries");
     for (var i=0; i<entries.length; i++) {
 	var first = GetValue(entries[i], map[0]);
-	if (first) {
+	if (first && first != "depart" && first != "arrive" && first != "dep-arr" && first != "flyby") {
 	    if (inTrip) {
 		AllTheTrips.push(single);
 		inTrip = false;
@@ -214,11 +214,19 @@ function FillInSingle(trip, choice)
     var leg;
     for (var i=0; i<trip.fTripLegs.length-1; i+=1) {
 	leg = trip.fTripLegs[i];
+	var classeff;
 	total += " <tr>\n";
-	total += "  <th class=\"city\" width=\"115px\">" + leg[1] + "</th>\n";
-	total += "  <td class=\"address\" width=\"150px\">" + leg[2] + "</td>\n";
+	if (leg[0] == "flyby") {
+	    total += "  <th class=\"citysmall\" width=\"115px\">" + leg[1] + "</th>\n";
+	    total += "  <td class=\"addresssmall\" width=\"150px\">" + leg[2] + "</td>\n";
+	    classeff = "faded";
+	} else {
+	    total += "  <th class=\"city\" width=\"115px\">" + leg[1] + "</th>\n";
+	    total += "  <td class=\"address\" width=\"150px\">" + leg[2] + "</td>\n";
+	    classeff = "eff";
+	}
 	for (jj=0; jj<Headers[choice].length; jj+=1) {
-	    total += "  <td class=\"eff\">" +
+	    total += "  <td class=\"" + classeff + "\">" +
 		leg[Headers[choice][jj][2]] +
 		" <div class=\"fn\">" +
 		leg[Headers[choice][jj][4]] + " " +
