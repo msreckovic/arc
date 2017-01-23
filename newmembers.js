@@ -264,3 +264,23 @@ function PreRegistration(jsonIn)
     FormatEverything(0);
 }
 
+function FillHeaderAndDescription(entries)
+{
+    var total = "";
+    for (var i=0; i<entries.length; i+=1) {
+	var vheader = entries[i].gsx$header.$t;
+	var vdescription = entries[i].gsx$description.$t;
+	total += "<h2>" + vheader + "</h2>";
+	total += vdescription + "\n\n";
+    }
+    return total;
+}
+
+function PostRegistration(jsonIn)
+{
+    var el = document.getElementById("followup");
+    if (el) {
+	el.innerHTML = FillHeaderAndDescription(jsonIn.feed.entry);
+    }
+}
+
