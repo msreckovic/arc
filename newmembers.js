@@ -18,11 +18,11 @@
 
 
 // "gsx$category"
-// "gsx$earlyseasonronin"
+// "gsx$earlyseasonroninlink"
 // "gsx$earlyseasonprice"
-// "gsx$fullseasonronin"
+// "gsx$fullseasonroninlink"
 // "gsx$fullseasonprice"
-// "gsx$lateseasonronin"
+// "gsx$lateseasonroninlink"
 // "gsx$lateseasonprice"
 // "gsx$description"
 
@@ -68,12 +68,12 @@ function CategoriesAndQuestions(entries)
 	    continue;
 	}
 	var vdesc = entries[i].gsx$description.$t;
-	var vesr = CheckRonin(entries[i].gsx$earlyseasonronin.$t);
+	var vesr = CheckRonin(entries[i].gsx$earlyseasonroninlink.$t);
 	if (pickingCategories) {
 	    var vesp = entries[i].gsx$earlyseasonprice.$t;
-	    var vfsr = CheckRonin(entries[i].gsx$fullseasonronin.$t);
+	    var vfsr = CheckRonin(entries[i].gsx$fullseasonroninlink.$t);
 	    var vfsp = entries[i].gsx$fullseasonprice.$t;
-	    var vlsr = CheckRonin(entries[i].gsx$lateseasonronin.$t);
+	    var vlsr = CheckRonin(entries[i].gsx$lateseasonroninlink.$t);
 	    var vlsp = entries[i].gsx$lateseasonprice.$t;
 	    categories.push([vcat, vesr, vesp, vfsr, vfsp, vlsr, vlsp, vdesc]);
 	} else {
@@ -200,7 +200,7 @@ function FormatQuestions(questions, countAgreed)
 	    if (countChecked <= countAgreed) {
 		total += "<img src='http://cliparts.co/cliparts/pT7/8X8/pT78X8jT9.jpg'>";
 	    } else {
-		total += "<h3>Read<span><span>and click on the right to proceed</span></span></h3>";
+		total += "<h3>Please read<span> <span>then click on the button on the right to proceed</span></span></h3>";
 	    }
 	}
 	total += "  </div><!-- price-cell feature -->\n";
@@ -258,7 +258,7 @@ function FormatEverything(countAgreed)
     }
 }
 
-function JsonCallback(jsonIn)
+function PreRegistration(jsonIn)
 {
     CatAndQues = CategoriesAndQuestions(jsonIn.feed.entry);
     FormatEverything(0);
