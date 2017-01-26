@@ -170,7 +170,9 @@ function TeslaTrips(jsonIn)
     var entries = jsonIn.feed.entry;
     var inTrip = false;
     var single = "";
-    //console.log("Found " + entries.length + " entries");
+    // console.log("JSON " + JSON.stringify(jsonIn.feed));
+    // console.log("Entries " + entries);
+    // console.log("Found " + entries.length + " entries");
     for (var i=0; i<entries.length; i++) {
 	var first = GetValue(entries[i], map[0]);
 	if (first && first != "depart" && first != "arrive" && first != "dep-arr" && first != "flyby") {

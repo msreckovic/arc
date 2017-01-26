@@ -198,16 +198,17 @@ function FormatQuestions(questions, countAgreed)
 	total += "<div class='price-cell feature'>\n";
 	if (check) {
 	    if (countChecked <= countAgreed) {
-		total += "<img src='http://cliparts.co/cliparts/pT7/8X8/pT78X8jT9.jpg'>";
+		// total += "<img src='http://cliparts.co/cliparts/pT7/8X8/pT78X8jT9.jpg'>";
+		total += "";
 	    } else {
-		total += "<h3>Please read<span> <span>then click on the button on the right to proceed</span></span></h3>";
+		total += "<h3>Please read<span> <span>click on the right to proceed</span></span></h3>";
 	    }
 	}
 	total += "  </div><!-- price-cell feature -->\n";
 
 	total += "  <div class='price-cell'>\n";
 	total += "    <h3>" + what + "</h3>\n";
-	total += "    <p>" + desc + "</p>\n";
+	total += "    <p style=\"text-align: left;\">" + desc + "</p>\n";
 	total += "  </div><!-- price-cell -->\n";
 
 	total += "  <div class='price-cell last'>\n";
