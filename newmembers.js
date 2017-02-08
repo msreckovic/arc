@@ -27,7 +27,7 @@
 // "gsx$description"
 
 // This is the global that takes care of things
-var CatAndQues = [[], []];
+var CatAndQues = [[], [], []];
 var Acknowledged = 0;
 var Buttons = [];
 
@@ -60,12 +60,19 @@ function CategoriesAndQuestions(entries)
 {
     var categories = [];
     var questions = [];
+    var extras = [];
     var pickingCategories = true;
+    var pickingExtras = false;
     for (var i=0; i<entries.length; i+=1) {
 	var vcat = entries[i].gsx$category.$t;
 	if (vcat == "Registration") {
-	    pickingCategories = false;
-	    continue;
+            pickingCategories = false;
+	    pickingExtras = false;
+            continue;
+	} else if (vcat == "Extras") {
+            pickingCategories = false;
+	    pickingExtras = true;
+            continue;
 	}
 	var vdesc = entries[i].gsx$description.$t;
 	var vesr = CheckRonin(entries[i].gsx$earlyseasonroninlink.$t);
@@ -76,14 +83,21 @@ function CategoriesAndQuestions(entries)
 	    var vlsr = CheckRonin(entries[i].gsx$lateseasonroninlink.$t);
 	    var vlsp = entries[i].gsx$lateseasonprice.$t;
 	    categories.push([vcat, vesr, vesp, vfsr, vfsp, vlsr, vlsp, vdesc]);
+	} else if (pickingExtras) {
+	    var vesp = entries[i].gsx$earlyseasonprice.$t;
+	    var vfsr = CheckRonin(entries[i].gsx$fullseasonroninlink.$t);
+	    var vfsp = entries[i].gsx$fullseasonprice.$t;
+	    var vlsr = CheckRonin(entries[i].gsx$lateseasonroninlink.$t);
+	    var vlsp = entries[i].gsx$lateseasonprice.$t;
+	    extras.push([vcat, vesr, vesp, vfsr, vfsp, vlsr, vlsp, vdesc]);
 	} else {
 	    questions.push([vcat, vesr, vdesc]);
 	}
     }
-    return [categories, questions];
+    return [categories, questions, extras];
 }
 
-function FormatCategories(categories)
+function FormatCategories(categories, prefix, display, label)
 {
     var i, one, id;
     var total = "";
@@ -104,7 +118,7 @@ function FormatCategories(categories)
 	    total += "<ul class='toggle'>\n";
 	}
 
-	one = "<li><a href='#cbid" + i + "' class='toggle-btn'><strong>";
+	one = "<li><a href='#cbid" + prefix + i + "' class='toggle-btn'><strong>";
 	one += cc[CAT];
 	one += "</strong></a>";
 	one += "<div class='toggle-content'>\n";
@@ -131,19 +145,23 @@ function FormatCategories(categories)
 	one += "</div></li>\n";
 
 	if (cc[FSR]) {
-	    id = "rbf" + i;
+	    id = "rbf" + prefix + i;
 	    buttons.push(id);
-	    one += "<div style='display:none' id='" + id + "'>";
+	    one += "<div style='display:" + display + "' id='" + id + "'>";
 	    one += "<a target='_blank' href='";
 	    one += cc[FSR];
-	    one += "' class='btn small-btn'>" + LABELS[FSR] + "</a>";
+	    if (label) {
+		one += "' class='btn small-btn'>" + label + "</a>";
+	    } else {
+		one += "' class='btn small-btn'>" + LABELS[FSR] + "</a>";
+	    }
 	    one += "</div>";
 	}
 
 	if (cc[ESR]) {
-	    id = "rbe" + i;
+	    id = "rbe" + prefix + i;
 	    buttons.push(id);
-	    one += "<div style='display:none' id='" + id + "'>";
+	    one += "<div style='display:" + display + "' id='" + id + "'>";
 	    one += "<a target='_blank' href='";
 	    one += cc[ESR];
 	    one += "' class='btn small-btn'>" + LABELS[ESR] + "</a>\n";
@@ -151,9 +169,9 @@ function FormatCategories(categories)
 	}
 
 	if (cc[LSR]) {
-	    id = "rbl" + i;
+	    id = "rbl" + prefix + i;
 	    buttons.push(id);
-	    one += "<div style='display:none' id='" + id + "'>";
+	    one += "<div style='display:" + display + "' id='" + id + "'>";
 	    one += "<a target='_blank' href='";
 	    one += cc[LSR];
 	    one += "' class='btn small-btn'>" + LABELS[LSR] + "</a>\n";
@@ -242,7 +260,13 @@ function FormatEverything(countAgreed)
     }
 
     if (countAgreed == 0) {
-	var categories = FormatCategories(CatAndQues[0]);
+	var extras = FormatCategories(CatAndQues[2], "ex", "block", "Purchase");
+	var ex = document.getElementById("extras");
+	if (ex) {
+	    ex.innerHTML = extras[0];
+	}
+
+	var categories = FormatCategories(CatAndQues[0], "", "none", "");
 	Buttons = categories[1];
 	var ce = document.getElementById("categories");
 	if (ce) {
