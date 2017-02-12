@@ -191,6 +191,104 @@ function FormatCategories(categories, prefix, display, label)
     return [total, buttons];
 }
 
+function FormatCategoriesTwo(categories, prefix, display, label)
+{
+    var i, row, one, id;
+    var total = "";
+    var buttons = [];
+    var columns = [[],[],[],[]];
+
+    var eachColumn = Math.ceil(categories.length / NUMBER_OF_COLUMNS);
+    console.log("Have " + categories.length + " with each " + eachColumn);
+
+    for (row=0; row<eachColumn; row++) {
+	total += "<div>\n";
+	total += "<div class='clearfix'>\n";
+	for (i=0; i<4; i++) {
+            var idx = 3 * i + row;
+	    console.log("Picking index " + idx);
+	    if (idx >= categories.length) break;
+	    var cc = categories[idx];
+	    if (i == 3) {
+		total += "<div class='fourth last'>\n";
+	    } else {
+		total += "<div class='fourth'>\n";
+	    }
+	    total += "<ul class='toggle'>\n";
+
+	    one = "<li><a href='#cbid" + prefix + idx + "' class='toggle-btn'><strong>";
+	    one += cc[CAT];
+	    one += "</strong></a>";
+	    one += "<div class='toggle-content'>\n";
+
+	    if (cc[FSP]) {
+		one += "<p><em>" + LABELS[FSP];
+		one += cc[FSP];
+		one += "</em></p>\n";
+	    }
+
+	    if (cc[ESP]) {
+		one += "<p><em>" + LABELS[ESP];
+		one += cc[ESP];
+		one += "</em></p>\n";
+	    }
+
+	    if (cc[LSP]) {
+		one += "<p><em>" + LABELS[LSP];
+		one += cc[LSP];
+		one += "</em></p>\n";
+	    }
+
+	    one += "<p>" + cc[DESC] + "</p>\n"
+	    one += "</div></li>\n";
+
+	    if (cc[FSR]) {
+		id = "rbf" + prefix + idx;
+		buttons.push(id);
+		one += "<div style='display:" + display + "' id='" + id + "'>";
+		one += "<a target='_blank' href='";
+		one += cc[FSR];
+		if (label) {
+		    one += "' class='btn small-btn'>" + label + "</a>";
+		} else {
+		    one += "' class='btn small-btn'>" + LABELS[FSR] + "</a>";
+		}
+		one += "</div>";
+	    }
+
+	    if (cc[ESR]) {
+		id = "rbe" + prefix + idx;
+		buttons.push(id);
+		one += "<div style='display:" + display + "' id='" + id + "'>";
+		one += "<a target='_blank' href='";
+		one += cc[ESR];
+		one += "' class='btn small-btn'>" + LABELS[ESR] + "</a>\n";
+		one += "</div>";
+	    }
+
+	    if (cc[LSR]) {
+		id = "rbl" + prefix + idx;
+		buttons.push(id);
+		one += "<div style='display:" + display + "' id='" + id + "'>";
+		one += "<a target='_blank' href='";
+		one += cc[LSR];
+		one += "' class='btn small-btn'>" + LABELS[LSR] + "</a>\n";
+		one += "</div>";
+	    }
+
+	    one += "<p>&nbsp;</p>\n";
+	    total += one;
+
+	    total += "</ul>\n";
+	    total += "</div>\n";
+	}
+	total += "</div>\n";
+	total += "</div>\n";
+    }
+
+    return [total, buttons];
+}
+
 function FormatQuestions(questions, countAgreed)
 {
     var total = "";
