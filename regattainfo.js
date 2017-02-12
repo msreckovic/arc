@@ -66,7 +66,10 @@ function CallbackListRegattasHow(jsonIn, active)
 	head += "Details";
     }
     head += "</th></tr>"
-    document.getElementById("regattas").innerHTML = "<table>" + head + total + "</table>";
+    var el = document.getElementById("regattas");
+    if (el) {
+	el.innerHTML = "<table>" + head + total + "</table>";
+    }
 }
 
 function CallbackListRegattas(jsonIn)
@@ -179,16 +182,52 @@ function InfoSingleFAQ(entry)
 
 function CallbackForRegatta(entry)
 {
-    document.getElementById("title").innerHTML = GV(entry, "name") + " (" + GV(entry, "date") + ")";
-    document.getElementById("regatta").innerHTML = InfoSingleRegatta(entry);
-    document.getElementById("entries").innerHTML = InfoSingleEntries(entry);
-    document.getElementById("payment").innerHTML = InfoSinglePayment(entry);
-    document.getElementById("faq").innerHTML = InfoSingleFAQ(entry);
+    var el;
+    el = document.getElementById("title");
+    if (el) {
+	el.innerHTML = GV(entry, "name") + " (" + GV(entry, "date") + ")";
+    }
+    el = document.getElementById("regatta");
+    if (el) {
+	el.innerHTML = InfoSingleRegatta(entry);
+    }
+    el = document.getElementById("entries");
+    if (el) {
+	el.innerHTML = InfoSingleEntries(entry);
+    }
+    el = document.getElementById("payment");
+    if (el) {
+	el.innerHTML = InfoSinglePayment(entry);
+    }
+    el = document.getElementById("faq");
+    if (el) {
+	el.innerHTML = InfoSingleFAQ(entry);
+    }
 }
 
 function CallbackSingleRegatta(jsonIn, index)
 {
     var entries = jsonIn.feed.entry;
     CallbackForRegatta(entries[index]);
+}
+
+function IndexFromShortName(entries, shortname)
+{
+    for (var i=0; i<entries.length; i++) {
+	var sn = GV(entries[i], "shortname");
+	if (sn == shortname) {
+	    return i;
+	}
+    }
+    return -1;
+}
+
+function CallbackNamedRegatta(jsonIn, shortname)
+{
+    var entries = jsonIn.feed.entry;
+    var index = IndexFromShortName(entries, shortname);
+    if (index >= 0) {
+      CallbackForRegatta(entries[index]);
+    }
 }
 
