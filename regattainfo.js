@@ -82,50 +82,29 @@ function CallbackListRegattasInactive(jsonIn)
     CallbackListRegattasHow(jsonIn, false);
 }
 
-/*
-REGATTA DETAILS & DEADLINES
-* This is a masters only regatta, 1000m, age 21+, handicaps applied at the finish.
-* It is held on Saturday, June 18th, Welland North Course
-* Entry deadline (see below for details) is the end of day Saturday, June 11th
-* The boats are being loaded Friday morning before the regatta (6am.)  If you must load on Thursday evening, talk to the coach, we may be able to arrange it.
-* Outstanding entry and trailer fees must be paid before the boats are loaded.
-* The oats are being unloaded Saturday evening, 8pm. All crews must have enough members present to safely unload the boats.
-* See the bottom of this page for the current entries and outstanding fees.
-
-For more details and event list and timing, go to regattacentral.com
-
-ENTRIES
-If unsure what to do, ask captain@...
-
-1. The entries should be coordinated ...
-2. Figure out what event...
-3. Figure out the crew, figure...
-4. Everybody ...
-5. Send the e-mail...
-
-PAYMENT
-*The cost is...
-* The way to pay:
-** Click here to go to...
-** In person...
-* Payments are due
-* Payment made $5, $10, $15
-
-FAQ
-* You have to be ARC members...
-* Deadlines
-* Composite, double trailer fees
-* First choice of the boat
-
-CURRENT REGISTRATION INFORMATION
-...
- */
-
 function InfoSingleRegatta(entry)
 {
+    var loading = GV(entry, "trailerload");
+    var unloading = GV(entry, "trailerunload");
+    var entrydue = GV(entry, "entrydue");
+    var when = GV(entry, "date");
+    var location = GV(entry, "location");
+
     var total = "";
     total += "<ul>";
     total += GV(entry, "details");
+    if (when && location) {
+	total += "<li>It is held " + when + " " + location + "</li>";
+    }
+    if (entrydue) {
+	total += "<li>Entry deadline (see below for details) is " + entrydue + ".</li>";
+    }
+    if (loading) {
+	total += "<li>Boats are loaded on " + loading + ". Each crew must have enough members present to safely load the trailer.</li>";
+    }
+    if (unloading) {
+	total += "<li>Boats are unloaded on " + unloading + ". Each crew must have enough members present to safely unload the trailer.</li>";
+    }
     total += "<li>Outstanding entry and trailer fees should be paid before the boats are loaded.</li>";
     total += "<li>See the bottom of this page for current entries and outstanding fees.</li>";
     total += "</ul>";
@@ -232,7 +211,7 @@ function CallbackNamedRegatta(jsonIn, shortname)
     }
 }
 var RegattaSpecificName = "";
-function StandardRegattaConfiguration(shortname)
+function StandardRegattaConfiguration(shortname, yearsheet, regattasheet)
 {
     RegattaSpecificName = shortname;
     var total = "";
@@ -250,7 +229,24 @@ function StandardRegattaConfiguration(shortname)
     total += "<h3>Event List</h3><div id=\"details\"></div>\n";
     total += "<hr />\n";
     total += "<h3>Boats</h3><div id=\"boats\"></div>\n";
-    document.getElementById("standardregatta").innerHTML = total;
+    var div = document.getElementById("standardregatta");
+    if (div) {
+	div.innerHTML = total;
+	if (yearsheet) {
+	    var src = "https://spreadsheets.google.com/feeds/list/" + yearsheet + "/public/values?alt=json-in-script&callback=StandardRegattaCallback";
+	    var script = document.createElement("script");
+	    script.type = "text/javascript";
+	    script.src = src;
+	    div.insertBefore(script, null);
+	}
+	if (regattasheet) {
+	    var src = "https://spreadsheets.google.com/feeds/list/" + regattasheet + "/public/values?alt=json-in-script&callback=JsonCallback";
+	    var script = document.createElement("script");
+	    script.type = "text/javascript";
+	    script.src = src;
+	    div.insertBefore(script, null);
+	}
+    }
 }
 
 function StandardRegattaCallback(jsonIn) {
