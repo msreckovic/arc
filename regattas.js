@@ -301,7 +301,8 @@ function AddAthlete(who, data)
 
 function AllAthletes(extracted)
 {
-    var athletes = "<table>\n";
+    var athletes = "If you have fees outstanding, please pay by clicking on the amount in the \"Fees\" column.  If you have paid, you can get the receipt by clicking on the amount in the \"Paid\" column."
+    athletes += "<table>\n";
     athletes += "  <thead>\n";
     athletes += "    <tr>\n";
     athletes += "      <th class=\"athletes\">Name</th>\n";
