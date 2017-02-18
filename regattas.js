@@ -328,8 +328,21 @@ function JsonCallback(jsonIn)
     var eventCount = CountEvents(jsonIn.feed.entry);
     var extracted = ExtractAthletes(jsonIn.feed.entry, eventCount);
     var eventCountAndDetails = AllDetails(jsonIn.feed.entry, extracted[1]);
-    document.getElementById("summary").innerHTML = AllSummary(jsonIn.feed.entry, Object.keys(extracted[0]).length);
-    document.getElementById("details").innerHTML = eventCountAndDetails[1];
-    document.getElementById("athletes").innerHTML = AllAthletes(extracted[0]);
-    document.getElementById("boats").innerHTML = BoatsFromSet(eventCountAndDetails[2]);
+    var el;
+    el = document.getElementById("summary");
+    if (el) {
+	el.innerHTML = AllSummary(jsonIn.feed.entry, Object.keys(extracted[0]).length);
+    }
+    el = document.getElementById("details");
+    if (el) {
+	el.innerHTML = eventCountAndDetails[1];
+    }
+    el = document.getElementById("athletes");
+    if (el) {
+	el.innerHTML = AllAthletes(extracted[0]);
+    }
+    el = document.getElementById("boats");
+    if (el) {
+	el.innerHTML = BoatsFromSet(eventCountAndDetails[2]);
+    }
 }

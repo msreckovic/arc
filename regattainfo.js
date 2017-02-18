@@ -108,7 +108,7 @@ function InfoSingleRegatta(entry)
     total += "<li>Outstanding entry and trailer fees should be paid before the boats are loaded.</li>";
     total += "<li>See the bottom of this page for current entries and outstanding fees.</li>";
     total += "</ul>";
-    total += "For more details and event list and timing, go to <a href=\"http://regattacentral.com\">regattacentral.com</a>";
+    total += "For more details and event list and timing, go to <a target=\"_blank\" href=\"http://regattacentral.com\">regattacentral.com</a>";
     return total;
 }
 
@@ -118,7 +118,7 @@ function InfoSingleEntries(entry)
     total += "If unsure what to do, ask <a href=\"mailto:captain@argonautrowingclub.com\">captain@argonautrowingclub.com</a>.";
     total += "<ol>";
     total += GV(entry, "entries");
-    total += "<li>Everybody in the crew needs to be in <a style=\"color:red;\" href=\"http://www.argonautrowingclub.com/arc-racing-roster/\">the club roster list</a> or the software won't let us enter them.  This means at least three or four days earlier for the RCA registration and fees payment.</li>";
+    total += "<li>Everybody in the crew needs to be in <a style=\"color:red;\" target=\"_blank\" href=\"http://www.argonautrowingclub.com/arc-racing-roster/\">the club roster list</a> or the software won't let us enter them.  This means at least three or four days earlier for the RCA registration and fees payment.</li>";
     total += "<li>Submit the names of everybody in the crew.</li>";
     total += "<li>Submit the event name and number, and preferred boat.</li>";
     total += "<li>Send an e-mail to <a href=\"mailto:captain@argonautrowingclub.com\">captain@argonautrowingclub.com</a>, CC-ing everybody in the crew and your program coach/coordinator.</li>";
@@ -136,7 +136,7 @@ function InfoSinglePayment(entry)
     total += "<li>Find your name in the list below, see what your total fees are.</li>";
     total += "<li>The way to pay:</li>";
     total += "<ol>";
-    total += "<li>Go to the <a href=\"\">Argo store</a>; look for the item matching " + GV(entry, "name") + " and put in the amount you owe. Put your name/info in the comments section.</li>";
+    total += "<li>Go to the <a style=\"color:red;\" target=\"_blank\" href=\"https://squareup.com/store/argonaut-rowing-club/\">Argo store</a>; look for the item matching " + GV(entry, "name") + " and put in the amount you owe. Put your name/info in the comments section.</li>";
     total += "<li>In person, with a credit card, if you catch one of the coaches or the captain.</li>";
     total += "</ol>";
     total += "<li>Payments are due with the entries.</li>";
@@ -211,6 +211,11 @@ function CallbackNamedRegatta(jsonIn, shortname)
     }
 }
 var RegattaSpecificName = "";
+function SetRegattaSpecificName(shortname)
+{
+    RegattaSpecificName = shortname;
+}
+
 function StandardRegattaConfiguration(shortname, yearsheet, regattasheet)
 {
     RegattaSpecificName = shortname;

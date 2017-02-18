@@ -77,26 +77,26 @@ function ForSingleOne(entry)
 
 function FillSquare(jsonIn, where)
 {
-  var entries = jsonIn.feed.entry;
+    var entries = jsonIn.feed.entry;
 
-  var details = "<table>\n";
-  details += "  <thead>\n";
-  details += "    <tr>\n";
-  details += "      <th>" + map.id.label + "</th>\n";
-  details += "      <th>" + map.when.label + "</th>\n";
-  details += "      <th>" + map.device.label + "</th>\n";
-  details += "      <th>" + map.amount.label + "</th>\n";
-  details += "      <th>" + map.url.label + "</th>\n";
-  details += "    </tr>\n";
-  details += "  </thead>\n";
-  details += "  <tbody>\n";
+    var details = "<table>\n";
+    details += "  <thead>\n";
+    details += "    <tr>\n";
+    details += "      <th>" + map.id.label + "</th>\n";
+    details += "      <th>" + map.when.label + "</th>\n";
+    details += "      <th>" + map.device.label + "</th>\n";
+    details += "      <th>" + map.amount.label + "</th>\n";
+    details += "      <th>" + map.url.label + "</th>\n";
+    details += "    </tr>\n";
+    details += "  </thead>\n";
+    details += "  <tbody>\n";
 
-  for (var i=0; i<entries.length; i+=1) {
-    details += ForSingleOne(entries[i]);
-	}
-  details += "  </tbody>\n";
-  details += "</table>\n";
+    for (var i=entries.length-1; i>=0; i-=1) {
+	details += ForSingleOne(entries[i]);
+    }
+    details += "  </tbody>\n";
+    details += "</table>\n";
 
-  document.getElementById(where).innerHTML = details;
+    document.getElementById(where).innerHTML = details;
 }
 
