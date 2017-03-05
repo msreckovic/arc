@@ -211,8 +211,8 @@ function CreateHeader(across, where, regattas, yahoo)
 
   total += "<td width=\"25%\" class=\"email\">";
 	//  total += "<h4 class=\"redClassARC\"><a href=\"http://www.argonautrowingclub.com/safety/\">Partial cold water rules in effect!</a></h4>";
-  total += EmailLink("arc.boat.allocations@gmail.com",
-										 "captain@argonautrowingclub.com",
+  total += EmailLink("captain@argonautrowingclub.com",
+										 "",
 										 "Boat%20Allocation%20Request",
 									"<h4 class=\"normalClassARC\">Click to request a boat allocation</h4>",
 																	yahoo);
