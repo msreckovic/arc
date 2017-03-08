@@ -15,6 +15,8 @@ var map = {
                 "item" : "gsx$amount"},
   "note" :     {"label" : "",
                 "item" : "gsx$note"},
+  "who" :      {"label" : "Who",
+                "item" : "gsx$who"},
 };
 
 function GetValue(where, what, instead)
@@ -59,7 +61,7 @@ function ForSingleOne(entry)
   var id = GetValue(entry, map.id.item, "id");
   var url = GetValue(entry, map.url.item, "");
   var amount = GetValue(entry, map.amount.item, "amount");
-  var note= GetValue(entry, map.note.item, "note");
+  var note = GetValue(entry, map.note.item, "note");
 
   var link = ForReceipt(id, url);
   id = ForId(id, url);
@@ -69,6 +71,32 @@ function ForSingleOne(entry)
   total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
   total += "    <td data-label=" + map.note.label + ">" + note  + "</td>\n";
   total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
+  total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
+  total += "</tr>\n";
+
+  return total;
+}
+
+function ForSingleType(entry, what)
+{
+  var when = GetValue(entry, map.when.item, "when");
+  var id = GetValue(entry, map.id.item, "id");
+  var url = GetValue(entry, map.url.item, "");
+  var amount = GetValue(entry, map.amount.item, "amount");
+  var note = GetValue(entry, map.note.item, "note");
+  var who = GetValue(entry, map.who.item, "who");
+
+	if (what != note) {
+    return "";
+	}
+
+  var link = ForReceipt(id, url);
+  id = ForId(id, url);
+
+  var total = "<tr>\n";
+  total += "    <td data-label=" + map.who.label + ">" + who  + "</td>\n";
+  total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
+  total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
   total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
   total += "</tr>\n";
 
@@ -93,6 +121,31 @@ function FillSquare(jsonIn, where)
 
     for (var i=entries.length-1; i>=0; i-=1) {
 	details += ForSingleOne(entries[i]);
+    }
+    details += "  </tbody>\n";
+    details += "</table>\n";
+
+    document.getElementById(where).innerHTML = details;
+}
+
+function FillType(jsonIn, where, what)
+{
+    var entries = jsonIn.feed.entry;
+
+    var details = "";
+    details += "<table>\n";
+    details += "  <thead>\n";
+    details += "    <tr>\n";
+    details += "      <th>" + map.who.label + "</th>\n";
+    details += "      <th>" + map.amount.label + "</th>\n";
+    details += "      <th>" + map.when.label + "</th>\n";
+    details += "      <th>" + map.url.label + "</th>\n";
+    details += "    </tr>\n";
+    details += "  </thead>\n";
+    details += "  <tbody>\n";
+
+    for (var i=entries.length-1; i>=0; i-=1) {
+        details += ForSingleType(entries[i], what);
     }
     details += "  </tbody>\n";
     details += "</table>\n";
