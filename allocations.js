@@ -70,13 +70,13 @@ function ProcessJson(jsonIn)
 {
     var map = ["gsx$day", "gsx$time", "gsx$type", "gsx$boat", "gsx$crew", "gsx$_ckd7g"];
 
-    var summary = 
+    var summary/* = 
 	  {"fDate" : jsonIn.feed.updated.$t,
 	  "fWeekdays" : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
 	  "fWeekends" : ["Saturday", "Sunday"],
 	  "fTimesDays" : ["5:30-7:30am", "7:30-9:30am", "9:30-11:30am", "11:30am-4:30pm", "4:30-6:30pm", "6:30-8:30pm"],
 	  "fTimesEnds" : ["6-8am", "8-10am", "10-12pm", "2-4pm", "4-6pm"],
-	  };
+	  }*/;
 
     var schedule = [];
     if ("entry" in jsonIn.feed) {
@@ -90,9 +90,7 @@ function ProcessJson(jsonIn)
 	    schedule.push( Allocate(entries[i]));
 	}
       
-	if ("fSchedule" in summary) {
-	    summary["fSchedule"] = schedule;
-	}
+	summary.fSchedule = schedule;
 	jsonSchedule = summary;
     }
 }
