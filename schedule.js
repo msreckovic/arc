@@ -577,256 +577,256 @@ function AvailableFillFrom(data)
 
 function ScheduleFillFrom(data, stats, showcaptains)
 {
-  var filtered = 0;
+    var filtered = 0;
 
-	var checkCaptains = Object.keys(FilterCaptains).length > 0;
+    var checkCaptains = Object.keys(FilterCaptains).length > 0;
 
-	for (var i=0; i<data.length; i+=1) {
+    for (var i=0; i<data.length; i+=1) {
 
-    var program = data[i].fProgram;
-    if (!FilterShow(data[i], checkCaptains)) {
-      filtered += 1;
-			console.log("SKIP " + program + " at " + data[i].fDay + " " + data[i].fTime + " " + data[i].fName);
-      continue;
-    }
-    var id = data[i].fDay + " " + data[i].fTime;
-    var type = data[i].fType;
-    var count = ValFromType(type);
-    var el = document.getElementById(id + count);
-    if (!el) {
-			console.log("Failed to find " + id + count);
-      el = document.getElementById(id+"99");
-    }
-    var name = data[i].fName.toUpperCase();
-    if (!(name in CountingUsage)) {
-      CountingUsage[name] = 0;
-    }
-    CountingUsage[name] += 1;
-
-    var who = data[i].fWho;
-    if (who && who.length > 1 && who[0] && who[1]) {
-			if (!(who[0] in CountingCaptains)) {
-				CountingCaptains[who[0]] = new Set();
-				CountingEmails[who[0]] = who[1];
-			}
-			CountingCaptains[who[0]].add(type + " " + name);
-
-			var tagit = type + " " + name;
-			if (!(tagit in CountingNames)) {
-				CountingNames[tagit] = new Set();
-			}
-			CountingNames[tagit].add(who[0]);
-		} else if (showcaptains) {
-			console.log("Skipping " + who);
-		}
-
-    var item = type + " " + name + " - " + program;
-    if (showcaptains) {
-			if (who && who.length > 1 && who[0] && who[1]) {
-				item += " <span>(" + who[0] + ")</span>";
-			} else {
-				item += " <span class=\"blue\">(captain?)</span>";
-			}
-    } else {
-			if (who && who.length > 1 && who[0] && who[1]) {
-				item += " <span>(" + who[0].split(" ")[0] + ")</span>";
-			}
-		}
-
-    var tag;
-    if (el.innerHTML.search(name) < 0) {
-				if (program.toUpperCase().search("ONCE") > 0) {
-          tag = "<li class=\"blue\">";
-        } else if (name.toUpperCase().search("DAMAGED") > 0) {
-          tag = "<li class=\"yellow\">";
-        } else if (name.toUpperCase().search("REGATTA") > 0) {
-          tag = "<li class=\"yellow\">";
-        } else {
-          tag = "<li>";
-        }
-    } else {
-      tag = "<li class=\"redClassARC\">";
-    }
-    el.innerHTML += tag + item + "</li>";
-
-    el = document.getElementById("C"+id);
-    el.innerHTML = parseInt(el.innerHTML) + count;
-
-    el = document.getElementById("R"+id);
-		el.innerHTML = parseInt(el.innerHTML) + 1;
-  }
-
-  if (filtered > 0) {
-    document.getElementById(stats).innerHTML = "<p>Not showing " + filtered + " allocations.</p>";
-  } else {
-			document.getElementById(stats).innerHTML = "";
+	var program = data[i].fProgram;
+	if (!FilterShow(data[i], checkCaptains)) {
+	    filtered += 1;
+	    console.log("SKIP " + program + " at " + data[i].fDay + " " + data[i].fTime + " " + data[i].fName);
+	    continue;
 	}
+	var id = data[i].fDay + " " + data[i].fTime;
+	var type = data[i].fType;
+	var count = ValFromType(type);
+	var el = document.getElementById(id + count);
+	if (!el) {
+	    console.log("Failed to find " + id + count);
+	    el = document.getElementById(id+"99");
+	}
+	var name = data[i].fName.toUpperCase();
+	if (!(name in CountingUsage)) {
+	    CountingUsage[name] = 0;
+	}
+	CountingUsage[name] += 1;
+
+	var who = data[i].fWho;
+	if (who && who.length > 1 && who[0] && who[1]) {
+	    if (!(who[0] in CountingCaptains)) {
+		CountingCaptains[who[0]] = new Set();
+		CountingEmails[who[0]] = who[1];
+	    }
+	    CountingCaptains[who[0]].add(type + " " + name);
+
+	    var tagit = type + " " + name;
+	    if (!(tagit in CountingNames)) {
+		CountingNames[tagit] = new Set();
+	    }
+	    CountingNames[tagit].add(who[0]);
+	} else if (showcaptains) {
+	    console.log("Skipping " + who);
+	}
+
+	var item = type + " " + name + " - " + program;
+	if (showcaptains) {
+	    if (who && who.length > 1 && who[0] && who[1]) {
+		item += " <span>(" + who[0] + ")</span>";
+	    } else {
+		item += " <span class=\"blue\">(captain?)</span>";
+	    }
+	} else {
+	    if (who && who.length > 1 && who[0] && who[1]) {
+		item += " <span>(" + who[0].split(" ")[0] + ")</span>";
+	    }
+	}
+
+	var tag;
+	if (el.innerHTML.search(name) < 0) {
+	    if (program.toUpperCase().search("ONCE") > 0) {
+		tag = "<li class=\"blue\">";
+            } else if (name.toUpperCase().search("DAMAGED") > 0) {
+		tag = "<li class=\"yellow\">";
+            } else if (name.toUpperCase().search("REGATTA") > 0) {
+		tag = "<li class=\"yellow\">";
+            } else {
+		tag = "<li>";
+            }
+	} else {
+	    tag = "<li class=\"redClassARC\">";
+	}
+	el.innerHTML += tag + item + "</li>";
+
+	el = document.getElementById("C"+id);
+	el.innerHTML = parseInt(el.innerHTML) + count;
+
+	el = document.getElementById("R"+id);
+	el.innerHTML = parseInt(el.innerHTML) + 1;
+    }
+
+    if (filtered > 0) {
+	document.getElementById(stats).innerHTML = "<p>Not showing " + filtered + " allocations.</p>";
+    } else {
+	document.getElementById(stats).innerHTML = "";
+    }
 }
 
 function FillCaptains(captains, yahoo)
 {
-  var allemails = "";
+    var allemails = "";
 
-  var body = "<tr>\n";
-  body += "<td>\n";
+    var body = "<tr>\n";
+    body += "<td>\n";
 
-	body += "<ul>\n";
-  for (one in CountingCaptains) {
-		var asid = one.replace(/ /g,"_");
+    body += "<ul>\n";
+    for (one in CountingCaptains) {
+	var asid = one.replace(/ /g,"_");
 
-		var email = CountingEmails[one];
-    if (allemails) {
-			allemails += ",";
-		}
-		allemails += email;
-    var asarr = Array.from(CountingCaptains[one]);
-		var allboats = "";
-		//		console.log("Going through " + CountingCaptains[one].values() + " and " + Array.from(CountingCaptains[one]));
-    for (var j=0; j<asarr.length; j+=1) {
-			if (allboats) {
-				allboats += ", ";
-			}
-			allboats += asarr[j];
-		}
+	var email = CountingEmails[one];
+	if (allemails) {
+	    allemails += ",";
+	}
+	allemails += email;
+	var asarr = Array.from(CountingCaptains[one]);
+	var allboats = "";
+	//		console.log("Going through " + CountingCaptains[one].values() + " and " + Array.from(CountingCaptains[one]));
+	for (var j=0; j<asarr.length; j+=1) {
+	    if (allboats) {
+		allboats += ", ";
+	    }
+	    allboats += asarr[j];
+	}
 
-		body += "<li>\n";
-    body += "<input type=\"checkbox\" id=\"check" + asid + "\" checked onchange=\"pressingCaptain(this)\">&nbsp;</input>";
-		body += EmailLink(email,
-											"captain@argonautrowingclub.com",
-											"Re: ARC boats: " + allboats,
-											one,
-											yahoo);
-		body += ": " + allboats;
-		body += "</li>\n";
-  }
-	body += "</ul>\n";
-  body += "</td>\n";
+	body += "<li>\n";
+	body += "<input type=\"checkbox\" id=\"check" + asid + "\" checked onchange=\"pressingCaptain(this)\">&nbsp;</input>";
+	body += EmailLink(email,
+			  "captain@argonautrowingclub.com",
+			  "Re: ARC boats: " + allboats,
+			  one,
+			  yahoo);
+	body += ": " + allboats;
+	body += "</li>\n";
+    }
+    body += "</ul>\n";
+    body += "</td>\n";
 
-  body += "<td><ul>\n";
-  for (one in CountingNames) {
-		var justone = "";
-    var emails = "";
-    var asarr = Array.from(CountingNames[one]);
-		for (var j=0; j<asarr.length; j+=1) {
-			var item = asarr[j];
-			if (justone) {
-			justone += ", ";
-			}
-			justone += item;
+    body += "<td><ul>\n";
+    for (one in CountingNames) {
+	var justone = "";
+	var emails = "";
+	var asarr = Array.from(CountingNames[one]);
+	for (var j=0; j<asarr.length; j+=1) {
+	    var item = asarr[j];
+	    if (justone) {
+		justone += ", ";
+	    }
+	    justone += item;
 
-			if (emails) {
-				emails += ",";
-			}
-			emails += CountingEmails[item];
-		}
-		body += "<li>" + EmailLink(emails,
-															 "captain@argonautrowingclub.com",
-															 "Re: " + one + " allocation",
-															 one,
-															 yahoo) + ": " + justone + "</li>";
-  }
-	body += "</ul></td>\n";
-
-  body += "</tr>";
-
-  var header = "<tr>\n";
-  header += "<th>" + EmailLink(allemails,
-															 "captain@argonautrowingclub.com",
-															 "To all crew captains",
-															 "Captains",
-															 yahoo) + "</th><th>Boats</th>\n";
-  header += "</tr>\n";
-
-	var total = "";
-	/*
-  total += "<pre>\n";
-  total += "Make each thing a checkbox\n so that we can filter per boat\n or per person\n";
-  total += "\n\n";
-  total += "</pre>\n";
-	*/
-  total += "<br><hr><table width=\"100%\" id=\"captains\">\n";
-  total += header + body;
-  total += "</table>\n";
-	document.getElementById(captains).innerHTML = total;
+	    if (emails) {
+		emails += ",";
+	    }
+	    emails += CountingEmails[item];
+	}
+	body += "<li>" + EmailLink(emails,
+				   "captain@argonautrowingclub.com",
+				   "Re: " + one + " allocation",
+				   one,
+				   yahoo) + ": " + justone + "</li>";
+    }
+    body += "</ul></td>\n";
+    
+    body += "</tr>";
+    
+    var header = "<tr>\n";
+    header += "<th>" + EmailLink(allemails,
+				 "captain@argonautrowingclub.com",
+				 "To all crew captains",
+				 "Captains",
+				 yahoo) + "</th><th>Boats</th>\n";
+    header += "</tr>\n";
+    
+    var total = "";
+    /*
+      total += "<pre>\n";
+      total += "Make each thing a checkbox\n so that we can filter per boat\n or per person\n";
+      total += "\n\n";
+      total += "</pre>\n";
+    */
+    total += "<br><hr><table width=\"100%\" id=\"captains\">\n";
+    total += header + body;
+    total += "</table>\n";
+    document.getElementById(captains).innerHTML = total;
 }
 
 var jsonBoats = [];
 function FillFleet(boats, across)
 {
-  var boatType = [8,4,2,1];
+    var boatType = [8,4,2,1];
   
-  var collect8 = "";
-  var collect4 = "";
-  var collect2 = "";
-  var collect1 = "";
+    var collect8 = "";
+    var collect4 = "";
+    var collect2 = "";
+    var collect1 = "";
 
-	// console.log(CountingUsage);
+    // console.log(CountingUsage);
 
-  var i, j;
-  for (i=0; i<jsonBoats.length; i+=1){
-    var name = jsonBoats[i][0];
-    var upper = name.toUpperCase();
-    var type = jsonBoats[i][1];
-    if (ValFromType(type) == 8) {
-      if (upper in CountingUsage) {
-        collect8 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
-      } else {
-        collect8 += "<li>" + name + "</li>";
-      }
-    } else if (ValFromType(type) == 4) {
-      if (upper in CountingUsage) {
-        collect4 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
-      } else {
-        collect4 += "<li>" + name + "</li>";
-      }
-    } else if (ValFromType(type) == 2) {
-      if (upper in CountingUsage) {
-        collect2 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
-      } else {
-        collect2 += "<li>" + name + "</li>";
-      }
-    } else if (ValFromType(type) == 1) {
-      if (upper in CountingUsage) {
-        collect1 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
-      } else {
-        collect1 += "<li>" + name + "</li>";
-      }
-    } else {
-      console.log("There is a problem with " + jsonBoats[0]);
-    }
-  }
-
-  var total = "<br><hr><table width=\"100%\">";
-  total += "<tr><th>8+</th><th>4x/4-/4+</th>";
-  if (across) {
-		total += "<th>2x/2-</th><th>1x</th></tr>";
+    var i, j;
+    for (i=0; i<jsonBoats.length; i+=1){
+	var name = jsonBoats[i][0];
+	var upper = name.toUpperCase();
+	var type = jsonBoats[i][1];
+	if (ValFromType(type) == 8) {
+	    if (upper in CountingUsage) {
+		collect8 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
+	    } else {
+		collect8 += "<li>" + name + "</li>";
+	    }
+	} else if (ValFromType(type) == 4) {
+	    if (upper in CountingUsage) {
+		collect4 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
+	    } else {
+		collect4 += "<li>" + name + "</li>";
+	    }
+	} else if (ValFromType(type) == 2) {
+	    if (upper in CountingUsage) {
+		collect2 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
+	    } else {
+		collect2 += "<li>" + name + "</li>";
+	    }
+	} else if (ValFromType(type) == 1) {
+	    if (upper in CountingUsage) {
+		collect1 += "<li>" + name + " (" + CountingUsage[upper] + ")</li>";
+	    } else {
+		collect1 += "<li>" + name + "</li>";
+	    }
 	} else {
-		total += "</tr><tr>";
+	    console.log("There is a problem with " + jsonBoats[0]);
 	}
+    }
 
-  total += "<tr><td><ul>";
-  total += collect8;
-  total += "</ul></td>";
+    var total = "<br><hr><table width=\"100%\">";
+    total += "<tr><th>8+</th><th>4x/4-/4+</th>";
+    if (across) {
+	total += "<th>2x/2-</th><th>1x</th></tr>";
+    } else {
+	total += "</tr><tr>";
+    }
 
-  total += "<td><ul>";
-  total += collect4;
-  total += "</ul></td>";
+    total += "<tr><td><ul>";
+    total += collect8;
+    total += "</ul></td>";
 
-  if (!across) {
-		total += "</tr><tr>";
-		total += "<th>2x/2-</th><th>1x</th></tr>";
-	}
+    total += "<td><ul>";
+    total += collect4;
+    total += "</ul></td>";
 
-  total += "<td><ul>";
-  total += collect2;
-  total += "</ul></td>";
+    if (!across) {
+	total += "</tr><tr>";
+	total += "<th>2x/2-</th><th>1x</th></tr>";
+    }
 
-  total += "<td><ul>";
-  total += collect1;
-  total += "</ul></td>";
+    total += "<td><ul>";
+    total += collect2;
+    total += "</ul></td>";
 
-  total += "</tr></table>";
-  document.getElementById(boats).innerHTML = total;
+    total += "<td><ul>";
+    total += collect1;
+    total += "</ul></td>";
+
+    total += "</tr></table>";
+    document.getElementById(boats).innerHTML = total;
 }
 
 function AssignedBoats(jsonIn)
