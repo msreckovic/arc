@@ -21,86 +21,92 @@ var map = {
 
 function GetValue(where, what, instead)
 {
-  if (what in where) {
-    if (where[what].$t) {
-      return where[what].$t;
+    if (what in where) {
+	if (where[what].$t) {
+	    return where[what].$t;
+	}
     }
-  }
-  return instead;
+    return instead;
 }
 
 function MakeLink(link, msg)
 {
-  return "<a target=\"_blank\" href=\"" + link + "\">" + msg + "</a>";
+    return "<a target=\"_blank\" href=\"" + link + "\">" + msg + "</a>";
 }
 
 function ForId(id, link)
 {
-  if (link.search("http") != 0) {
-    return id;
-  }
-  return MakeLink(link, id);
+    if (link.search("http") != 0) {
+	return id;
+    }
+    return MakeLink(link, id);
 }
 
 function ForReceipt(id, link)
 {
-  if (link.search("http") != 0) {
-    if (link.search("SENT") == 0) {
-      return "Deposit";
+    if (link.search("http") != 0) {
+	if (link.search("SENT") == 0) {
+	    return "Deposit";
+	}
+	return link;
     }
-    return link;
-  }
-  return MakeLink("https://squareup.com/receipt/preview/" + id, "Receipt");
+    return MakeLink("https://squareup.com/receipt/preview/" + id, "Receipt");
 }
 
 function ForSingleOne(entry)
 {
-  var which = GetValue(entry, map.which.item, "");
-  var when = GetValue(entry, map.when.item, "when");
-  var device = GetValue(entry, map.device.item, "device");
-  var id = GetValue(entry, map.id.item, "id");
-  var url = GetValue(entry, map.url.item, "");
-  var amount = GetValue(entry, map.amount.item, "amount");
-  var note = GetValue(entry, map.note.item, "note");
+    var which = GetValue(entry, map.which.item, "");
+    var when = GetValue(entry, map.when.item, "when");
+    var device = GetValue(entry, map.device.item, "device");
+    var id = GetValue(entry, map.id.item, "id");
+    var url = GetValue(entry, map.url.item, "");
+    var amount = GetValue(entry, map.amount.item, "amount");
+    var note = GetValue(entry, map.note.item, "note");
+    var who = GetValue(entry, map.who.item, "");
 
-  var link = ForReceipt(id, url);
-  id = ForId(id, url);
+    if (who) {
+	note += " (" + who + ")";
+    }
 
-  var total = "<tr>\n";
-  total += "    <td class=\"tiny\" data-label=" + map.id.label + ">" + id + "</td>\n";
-  total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
-  total += "    <td data-label=" + map.note.label + ">" + note  + "</td>\n";
-  total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
-  total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
-  total += "</tr>\n";
+    var link = ForReceipt(id, url);
+    id = ForId(id, url);
 
-  return total;
+    var total = "<tr>\n";
+    total += "    <td class=\"tiny\" data-label=" + map.id.label + ">" + id + "</td>\n";
+    total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
+    total += "    <td data-label=" + map.note.label + ">" + note  + "</td>\n";
+    total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
+    total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
+    total += "</tr>\n";
+
+    return total;
 }
 
 function ForSingleType(entry, what)
 {
-  var when = GetValue(entry, map.when.item, "when");
-  var id = GetValue(entry, map.id.item, "id");
-  var url = GetValue(entry, map.url.item, "");
-  var amount = GetValue(entry, map.amount.item, "amount");
-  var note = GetValue(entry, map.note.item, "note");
-  var who = GetValue(entry, map.who.item, "who");
+    var when = GetValue(entry, map.when.item, "when");
+    var id = GetValue(entry, map.id.item, "id");
+    var url = GetValue(entry, map.url.item, "");
+    var amount = GetValue(entry, map.amount.item, "amount");
+    var note = GetValue(entry, map.note.item, "note");
+    var who = GetValue(entry, map.who.item, "anon.");
 
-	if (what != note) {
-    return "";
-	}
+    if (note.indexOf(what) < 0) {
+	return "";
+    }
 
-  var link = ForReceipt(id, url);
-  id = ForId(id, url);
+    var link = ForReceipt(id, url);
+    id = ForId(id, url);
 
-  var total = "<tr>\n";
-  total += "    <td data-label=" + map.who.label + ">" + who  + "</td>\n";
-  total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
-  total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
-  total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
-  total += "</tr>\n";
+    var total = "<tr>\n";
+    total += "    <td data-label=" + map.who.label + ">" + who  + "</td>\n";
+    total += "    <td data-label=" + map.note.label + ">" + note  + "</td>\n";
+    total += "    <td data-label=" + map.amount.label + ">" + amount  + "</td>\n";
+    total += "    <td data-label=" + map.when.label +">" + when  + "</td>\n";
+    total += "    <td data-label=" + map.url.label + ">" + link  + "</td>\n";
+    total += "</tr>\n";
 
-  return total;
+    return total;
 }
 
 function FillSquare(jsonIn, where)
@@ -137,6 +143,7 @@ function FillType(jsonIn, where, what)
     details += "  <thead>\n";
     details += "    <tr>\n";
     details += "      <th>" + map.who.label + "</th>\n";
+    details += "      <th>" + map.note.label + "</th>\n";
     details += "      <th>" + map.amount.label + "</th>\n";
     details += "      <th>" + map.when.label + "</th>\n";
     details += "      <th>" + map.url.label + "</th>\n";

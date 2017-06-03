@@ -276,7 +276,7 @@ function AddAthlete(who, data)
     var total = "<tr>";
     total += "    <td data-label=Name class=\"athletes\">" + who + "</td>\n";
     total += "    <td data-label=Events class=\"athletes\">" + data[0] + "</td>\n";
-    if (data[1] != data[2]) {
+    if (parseFloat(data[1].substring(1)) > parseFloat(data[2].substring(1))) {
 	total += "    <td class=\"alert\" data-label=Fees>";
 	total += "<a target=\"_blank\" href=\"https://squareup.com/store/argonaut-rowing-club/\">";
 	total += data[1];

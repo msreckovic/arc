@@ -38,14 +38,11 @@ function GetValue(where, what, instead)
 function GetOwing(entries, full)
 {
     var people = [];
-
     var i, owing, who, amount, paid, arrears;
     for (i=1; i<entries.length; i++) {
 	who = GetValue(entries[i], "gsx$who", "");
 	owing = GetValue(entries[i], "gsx$owing", "");
-	//		if (owing != 0) {
-	// console.log("This is owing " + owing);
-	if (full || owing > 2) {
+	if (full || owing > 2 || owing < -2) {
 	    amount = GetValue(entries[i], "gsx$total", "");
 	    paid = GetValue(entries[i], "gsx$paid", "");
 	    arrears = GetValue(entries[i], "gsx$arrears", "");

@@ -7,80 +7,80 @@ var CountingEmails = {};
 // Production steps of ECMA-262, Edition 6, 22.1.2.1
 // Reference: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-array.from
 if (!Array.from) {
-		Array.from = (function () {
-						var toStr = Object.prototype.toString;
-						var isCallable = function (fn) {
-								return typeof fn === 'function' || toStr.call(fn) === '[object Function]';
-						};
-						var toInteger = function (value) {
-								var number = Number(value);
-								if (isNaN(number)) { return 0; }
-								if (number === 0 || !isFinite(number)) { return number; }
-								return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
-						};
-						var maxSafeInteger = Math.pow(2, 53) - 1;
-						var toLength = function (value) {
-								var len = toInteger(value);
-								return Math.min(Math.max(len, 0), maxSafeInteger);
-						};
+    Array.from = (function () {
+	var toStr = Object.prototype.toString;
+	var isCallable = function (fn) {
+	    return typeof fn === 'function' || toStr.call(fn) === '[object Function]';
+	};
+	var toInteger = function (value) {
+	    var number = Number(value);
+	    if (isNaN(number)) { return 0; }
+	    if (number === 0 || !isFinite(number)) { return number; }
+	    return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
+	};
+	var maxSafeInteger = Math.pow(2, 53) - 1;
+	var toLength = function (value) {
+	    var len = toInteger(value);
+	    return Math.min(Math.max(len, 0), maxSafeInteger);
+	};
 
-						// The length property of the from method is 1.
-						return function from(arrayLike/*, mapFn, thisArg */) {
-								// 1. Let C be the this value.
-								var C = this;
+	// The length property of the from method is 1.
+	return function from(arrayLike/*, mapFn, thisArg */) {
+	    // 1. Let C be the this value.
+	    var C = this;
+	    
+	    // 2. Let items be ToObject(arrayLike).
+	    var items = Object(arrayLike);
+	    
+	    // 3. ReturnIfAbrupt(items).
+	    if (arrayLike == null) {
+		throw new TypeError("Array.from requires an array-like object - not null or undefined");
+	    }
+	    
+	    // 4. If mapfn is undefined, then let mapping be false.
+	    var mapFn = arguments.length > 1 ? arguments[1] : void undefined;
+	    var T;
+	    if (typeof mapFn !== 'undefined') {
+		// 5. else
+		// 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
+		if (!isCallable(mapFn)) {
+		    throw new TypeError('Array.from: when provided, the second argument must be a function');
+		}
 
-								// 2. Let items be ToObject(arrayLike).
-								var items = Object(arrayLike);
-
-								// 3. ReturnIfAbrupt(items).
-								if (arrayLike == null) {
-										throw new TypeError("Array.from requires an array-like object - not null or undefined");
-								}
-
-								// 4. If mapfn is undefined, then let mapping be false.
-								var mapFn = arguments.length > 1 ? arguments[1] : void undefined;
-								var T;
-								if (typeof mapFn !== 'undefined') {
-										// 5. else
-										// 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
-										if (!isCallable(mapFn)) {
-												throw new TypeError('Array.from: when provided, the second argument must be a function');
-										}
-
-										// 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
-										if (arguments.length > 2) {
-												T = arguments[2];
-										}
-								}
-
-								// 10. Let lenValue be Get(items, "length").
-								// 11. Let len be ToLength(lenValue).
-								var len = toLength(items.length);
-
-								// 13. If IsConstructor(C) is true, then
-								// 13. a. Let A be the result of calling the [[Construct]] internal method of C with an argument list containing the single item len.
-								// 14. a. Else, Let A be ArrayCreate(len).
-								var A = isCallable(C) ? Object(new C(len)) : new Array(len);
-
-								// 16. Let k be 0.
-								var k = 0;
-								// 17. Repeat, while k < len… (also steps a - h)
-								var kValue;
-								while (k < len) {
-										kValue = items[k];
-										if (mapFn) {
-												A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k);
-										} else {
-												A[k] = kValue;
-										}
-										k += 1;
-								}
-								// 18. Let putStatus be Put(A, "length", len, true).
-								A.length = len;
-								// 20. Return A.
-								return A;
-						};
-				}());
+		// 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
+		if (arguments.length > 2) {
+		    T = arguments[2];
+		}
+	    }
+	    
+	    // 10. Let lenValue be Get(items, "length").
+	    // 11. Let len be ToLength(lenValue).
+	    var len = toLength(items.length);
+	    
+	    // 13. If IsConstructor(C) is true, then
+	    // 13. a. Let A be the result of calling the [[Construct]] internal method of C with an argument list containing the single item len.
+	    // 14. a. Else, Let A be ArrayCreate(len).
+	    var A = isCallable(C) ? Object(new C(len)) : new Array(len);
+	    
+	    // 16. Let k be 0.
+	    var k = 0;
+	    // 17. Repeat, while k < len… (also steps a - h)
+	    var kValue;
+	    while (k < len) {
+		kValue = items[k];
+		if (mapFn) {
+		    A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k);
+		} else {
+		    A[k] = kValue;
+		}
+		k += 1;
+	    }
+	    // 18. Let putStatus be Put(A, "length", len, true).
+	    A.length = len;
+	    // 20. Return A.
+	    return A;
+	};
+    }());
 }
 // POLYFILL
 
@@ -140,91 +140,92 @@ function FillRegattas(regattas)
 
 function TemplateEmailBody()
 {
-	var total = "";
-	//	total += "We are in partial cold water rules.  If you don't have a dedicated coach boat following you, make sure one is set up on the dock and ready to go.%3Cbr%3E";
-	total += "";
-	total += "I have you down as crew captain for this boat allocation:";
+    var total = "";
+    //	total += "We are in partial cold water rules.  If you don't have a dedicated coach boat following you, make sure one is set up on the dock and ready to go.%3Cbr%3E";
+    total += "";
+    total += "I have you down as crew captain for this boat allocation:\n\n\n";
 
-	total += "4x Dynamic:%3Cbr%3E";
-	total += "Monday 6:30-8:30pm%0A";
-	total += "Wednesday 6:30-8:30pm%0A";
-	total += "Saturday 8-10am%0A";
+    total += "4x Dynamic:%3Cbr%3E";
+    total += "Monday 6:30-8:30pm%0A";
+    total += "Wednesday 6:30-8:30pm%0A";
+    total += "Saturday 8-10am%0A";
 
-	total += "Your crew captain responsibilities also include to (please :)";
+    total += "Your crew captain responsibilities also include to (please :)";
 
-	total += "Verify with the membership director that all your crew members are ARC members.";
-	total += "If you need an exception to this rule, you can use a guest row ($25, and a filled waiver) or request an exemption from the club captain.";
-	total += "Make sure you, or your delegate, checks the condition of the boat (and related equipment) before and after the row.";
-	total += "Make sure the boat is in its allocated rack space";
-	total += "Report anything missing or in need of repairs or attention to the club captain.";
-	total += "Report any on water collisions or equipment damage to the club captain.";
-	total += "Report a transfer of crew \"captainship\" to another person to the club captain.";
-	total += "Report any changes to the schedule to the club captain.  We cannot afford to allocate and not use boats.  If you are not planning on using all of these allocations, report it.";
-	total += "";
-	total += "";
-	total += "Please verify that the boat allocation page is properly recording this allocation, and keep checking it for changes.";
-	total += "";
-	total += "Any other questions and comments, contact the club captain.";
-	total += "";
-	total += "CC-ed COACHCOORDINATOR as this is vaguely associated with PROGRAM";
-	total += "";
-	total += "(See club rules linked off this page for the definition of the crew captain.)";
-	return total;
+    total += "Verify with the membership director that all your crew members are ARC members.";
+    total += "If you need an exception to this rule, you can use a guest row ($25, and a filled waiver) or request an exemption from the club captain.";
+    total += "Make sure you, or your delegate, checks the condition of the boat (and related equipment) before and after the row.";
+    total += "Make sure the boat is in its allocated rack space";
+    total += "Report anything missing or in need of repairs or attention to the club captain.";
+    total += "Report any on water collisions or equipment damage to the club captain.";
+    total += "Report a transfer of crew captainship to another person to the club captain.";
+    total += "Report any changes to the schedule to the club captain.  We cannot afford to allocate and not use boats.  If you are not planning on using all of these allocations, report it.";
+    total += "";
+    total += "";
+    total += "Please verify that the boat allocation page is properly recording this allocation, and keep checking it for changes.";
+    total += "";
+    total += "Any other questions and comments, contact the club captain.";
+    total += "";
+    total += "CC-ed COACHCOORDINATOR as this is vaguely associated with PROGRAM";
+    total += "";
+    total += "(See club rules linked off this page for the definition of the crew captain.)";
+    return total;
 }
 
 function EmailLink(to, cc, subject, text, yahoo)
 {
-	// Apparently, this may work Yahoo!Mail:
-  // http://compose.mail.yahoo.com/?to=TO&subject=SUBJECTMap&body=BODY
-	var result = "<a href=\"";
-  if (yahoo) {
-		result += "http://compose.mail.yahoo.com/?to=" + to;
-		if (cc) {
-			result += "&cc=" + cc;
-		}
-		result += "&subject=" + subject;
-		result += "&body=" + TemplateEmailBody();
-	} else {
-		result += "mailto:" + to  + "?";
-		if (cc) {
-			result += "cc=" + cc + "&";
-		}
-		// result += "subject=" + subject + "\" target=\"_blank\">";
-		result += "subject=" + subject;
+    // Apparently, this may work Yahoo!Mail:
+    // http://compose.mail.yahoo.com/?to=TO&subject=SUBJECTMap&body=BODY
+    var result = "<a target=\"_blank\" href=\"";
+    if (yahoo) {
+	result += "http://compose.mail.yahoo.com/?to=" + to;
+	if (cc) {
+	    result += "&cc=" + cc;
 	}
-	result += "\">";
-	result += text;
-	result += "</a>";
-	return result;
+	result += "&subject=" + subject;
+	result += "&body=" + TemplateEmailBody();
+    } else {
+	result += "mailto:" + to  + "?";
+	if (cc) {
+	    result += "cc=" + cc + "&";
+	}
+	// result += "subject=" + subject + "\" target=\"_blank\">";
+	result += "subject=" + encodeURI(subject);
+	result += "&body=" + encodeURI(TemplateEmailBody());
+    }
+    result += "\">";
+    result += text;
+    result += "</a>";
+    return result;
 }
 
 function CreateHeader(across, where, regattas, yahoo)
 {
-  var total = "<table width=\"100%\"><tr>";
+    var total = "<table width=\"100%\"><tr>";
 
-	if (across) {
-    total += "<td width=\"30%\"><a title=\"Argonaut Rowing Club\" href=\"http://www.argonautrowingclub.com\"><h2 id=\"logo\">Argonaut Rowing Club</h2></a></td>";
-    total += "<td>";
-    total += FillRegattas(regattas);
-    total += "</td>";
-  }
+    if (across) {
+	total += "<td width=\"30%\"><a title=\"Argonaut Rowing Club\" href=\"http://www.argonautrowingclub.com\"><h2 id=\"logo\">Argonaut Rowing Club</h2></a></td>";
+	total += "<td>";
+	total += FillRegattas(regattas);
+	total += "</td>";
+    }
 
-  total += "<td width=\"25%\" class=\"email\">";
-	//  total += "<h4 class=\"redClassARC\"><a href=\"http://www.argonautrowingclub.com/safety/\">Partial cold water rules in effect!</a></h4>";
-  total += EmailLink("captain@argonautrowingclub.com",
-										 "",
-										 "Boat%20Allocation%20Request",
-									"<h4 class=\"normalClassARC\">Click to request a boat allocation</h4>",
-																	yahoo);
-	total += "<h4 class=\"normalClassARC\"><a href=\"http://srecko.ca/ARC/status.html\">Please only use the allocated equipment.</a></h4>";
-  total += "</td>";
-	if (!across) {
-		total += "</tr><tr>";
-    total += "<td>";
-    total += FillRegattas(regattas);
+    total += "<td width=\"25%\" class=\"email\">";
+    //  total += "<h4 class=\"redClassARC\"><a href=\"http://www.argonautrowingclub.com/safety/\">Partial cold water rules in effect!</a></h4>";
+    total += EmailLink("captain@argonautrowingclub.com",
+		       "",
+		       "Boat%20Allocation%20Request",
+		       "<h4 class=\"normalClassARC\">Click to request a boat allocation</h4>",
+		       yahoo);
+    total += "<h4 class=\"normalClassARC\"><a href=\"http://srecko.ca/ARC/status.html\">Please only use the allocated equipment.</a></h4>";
     total += "</td>";
-		total += "</tr><tr>";
-	}
+    if (!across) {
+	total += "</tr><tr>";
+	total += "<td>";
+	total += FillRegattas(regattas);
+	total += "</td>";
+	total += "</tr><tr>";
+    }
 
     total += "<td width=\"25%\" class=\"email\">";
     total += "<table width=\"100%\" id=\"legend\"><tr>";
@@ -510,9 +511,9 @@ function CaptainsFill()
 
 function CaptainsFillFrom(data, stats, captains, yahoo)
 {
-	DoingCaptains = 1;
-  ScheduleFillFrom(data, stats, true);
-	FillCaptains(captains, yahoo);
+    DoingCaptains = 1;
+    ScheduleFillFrom(data, stats, true);
+    FillCaptains(captains, yahoo);
 }
 
 function WhatAvailable(boats, id)

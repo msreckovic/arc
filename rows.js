@@ -35,11 +35,7 @@ function GetWeeks(entries)
     var andrew = GetValue(entries[i], "gsx$andrew");
     var john = GetValue(entries[i], "gsx$john");
     var markian = GetValue(entries[i], "gsx$markian");
-    var larry = GetValue(entries[i], "gsx$larry");
-    var george = GetValue(entries[i], "gsx$george");
-    var heder = GetValue(entries[i], "gsx$heder");
     var milan = GetValue(entries[i], "gsx$milan");
-    var carmichael = GetValue(entries[i], "gsx$carmichael");
     var workout = GetValue(entries[i], "gsx$workout");
     var time = GetValue(entries[i], "gsx$time");
 
@@ -62,23 +58,11 @@ function GetWeeks(entries)
     if (andrew) {
       rowers.push("Andrew");
     }
-    if (carmichael) {
-      rowers.push("Carmichael");
-    }
     if (john) {
       rowers.push("John");
     }
     if (markian) {
       rowers.push("Markian");
-    }
-    if (larry) {
-      rowers.push("Larry");
-    }
-    if (george) {
-      rowers.push("George");
-    }
-    if (heder) {
-      rowers.push("Heder");
     }
     if (milan) {
       rowers.push("Milan");
