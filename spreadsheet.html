@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+<link rel='stylesheet' href='racun.css' type='text/css' media='screen'/>
+<meta charset="UTF-8">
+<meta name='viewport' content="width=device-width, initial-scale=1" />
+<title>Maui 2017</title>
+
+<script>
+  var map = {
+             "nikkivanja" : {"label" : "Nikki-Vanja",
+                             "who" : "Nikki, Vanja, Max",
+                             "people" : "gsx$tk",
+                             "cut" : "gsx$nikki",
+                             "paid" : "gsx$vanja"},
+             "cecasholto" : {"label" : "Ceca-Sholto",
+                             "who" : "Ceca, Sholto, Emma",
+                             "people" : "gsx$tc",
+                             "cut" : "gsx$ceca",
+                             "paid" : "gsx$sholto"},
+             "zuzanabojan" : {"label" : "Zuzana-Bojan",
+                             "who" : "Zuzana & Bojan",
+                             "people" : "gsx$tz",
+                             "cut" : "gsx$zuzana",
+                             "paid" : "gsx$bojan"},
+             "normamilan" : {"label" : "Norma-Milan",
+                             "who" : "Norma & Milan",
+                             "people" : "gsx$tn",
+                             "cut" : "gsx$norma",
+                             "paid" : "gsx$milan"},
+            };
+
+function ForPeople(who, spent, paid)
+{
+  var summary = "";
+  summary += "    <td data-label=Who>" + who + "</td>\n";
+  summary += "    <td data-label=Spent>" + spent + "</td>\n";
+  summary += "    <td data-label=Paid>" + paid + "</td>\n";
+  return summary;
+}
+
+function ForAmount(amount)
+{
+    var summary = "    <td data-label=Verdict>";
+
+    var asInt = parseInt(amount, 10);
+  if (asInt < 0) {
+    summary += amount + " (due)</td>\n";
+  } else if (asInt > 0) {
+    summary += amount + " (owes)</td>\n";
+  } else {
+    summary += amount + "&nbsp;</td>\n";
+  }
+  return summary;
+}
+
+function GetValue(where, what, instead)
+{
+  if (what in where) {
+    return where[what].$t;
+  }
+  return instead;
+}
+
+function JsonCallback(jsonIn)
+{
+    var entries = jsonIn.feed.entry;
+    var totals = entries[1];
+    var differences = entries[2];
+
+    var details = "<table>\n";
+    details += "  <thead>\n";
+    details += "    <tr>\n";
+    details += "      <th>When</th>\n";
+    details += "      <th>What</th>\n";
+    details += "      <th>Amount</th>\n";
+    details += "      <th>Paid-By</th>\n";
+    for (var j in map) {
+	details += "      <th>" + map[j].label + "</th>\n";
+    }
+    details += "    </tr>\n";
+    details += "  </thead>\n";
+    details += "  <tbody>\n";
+
+    for (var i=4; i<entries.length; i+=1) {
+	var doit = false;
+	var amount = 0;
+	var who = "";
+	var cur = "$";
+
+	var what = entries[i].gsx$what.$t;
+	var when = entries[i].gsx$when.$t;
+
+	var people = [];
+	var cuts = [];
+	var labels = [];
+
+	for (j in map) {
+	    var pp = GetValue(entries[i], map[j].people, 0);
+	    var cc = GetValue(entries[i], map[j].cut, "&nbsp;");
+	    var ll = map[j].label;
+	    people.push(pp);
+	    cuts.push(cc);
+	    labels.push(ll);
+
+	    var pd = GetValue(entries[i], map[j].paid, 0);
+	    if (pd) {
+		var val = entries[i][map[j].paid].$t;
+		var am = parseFloat(val.substring(1));
+		if (am > 0) {
+		    cur = val[0];
+		    amount += am;
+		    doit = true;
+		    who = map[j].who;
+		}
+	    }
+	}
+
+	if (doit) {
+	    details += "    <tr>";
+	    details += "    <td data-label=When>" + when  + "</td>\n";
+	    details += "    <td data-label=What>" + what  + "</td>\n";
+	    details += "    <td data-label=Amount>" + cur + amount + "</td>\n";
+	    details += "    <td data-label=Paid-By>" + who  + "</td>\n";
+	    for (j=0; j<people.length; j+=1) {
+		if (people[j]) {
+		    details += "    <td data-label=" + labels[j] + ">" + cuts[j] + " (" + people[j] + ")</td>\n";
+		} else {
+		    details += "    <td data-label=" + labels[j] + ">" + cuts[j] + "</td>\n";
+		}
+	    }
+	    details += "    </tr>";
+	}
+    }
+
+    details += "  </tbody>\n";
+    details += "</table>\n";
+
+    var summary = "<table>\n";
+    summary += "  <thead>\n";
+    summary += "    <tr>\n";
+    summary += "      <th>Who</th>\n";
+    summary += "      <th>Spent</th>\n";
+    summary += "      <th>Paid</th>\n";
+    summary += "      <th>Verdict</th>\n";
+    summary += "    </tr>\n";
+    summary += "  </thead>\n";
+
+    summary += "  <tbody>\n";
+    for (j in map) {
+	summary += "   <tr>";
+	summary += ForPeople(map[j].who,
+			     entries[1][map[j].cut].$t,
+			     entries[1][map[j].paid].$t);
+	summary += ForAmount(entries[2][map[j].paid].$t);
+	summary += "   </tr>\n";
+    }
+
+    summary += "  </tbody>\n";
+    summary += "</table>\n";
+
+    document.getElementById("summary").innerHTML = summary;
+    document.getElementById("details").innerHTML = details;
+}
+</script>
+</head>
+
+<body>
+<h2>Summary</h2>
+<div id="summary"></div>
+<hr>
+<h2>Details</h2>
+<div id="details"></div>
+
+<script src="https://spreadsheets.google.com/feeds/list/1oWmF6mKi126JJFoBIG2_XH7zV8I7LxzeP5MfyMhrT_4/1/public/values?alt=json-in-script&callback=JsonCallback"></script>
+
+</body>
+</html>

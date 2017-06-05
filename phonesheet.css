@@ -1,0 +1,42 @@
+body {
+    font-family: 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+}
+
+#racun {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#trip {
+}
+
+#controls {
+    font-size: 18px;
+}
+
+#controls table td {
+    border: none;
+    padding: 5px;
+}
+
+#what {
+}
+
+#amount {
+}
+
+#guests {
+}
+
+#paidby {
+    font-size: 18px;
+}
+
+#fpaidby {
+    font-size: 16px;
+}
+
+.rightjustified {
+    text-align: right;
+}
+
