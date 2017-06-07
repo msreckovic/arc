@@ -1,22 +1,27 @@
 body {
-    font-family: 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-family: Copperplate / Copperplate Gothic Light, Gill Sans / Gill Sans MT, sans-serif;
 }
 
 #racun {
     font-weight: bold;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 #trip {
 }
 
 #controls {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 #controls table td {
     border: none;
     padding: 5px;
+}
+
+#summary {
+    font-size: 18px;
+    border: 1px #f00;
 }
 
 #what {
@@ -28,15 +33,34 @@ body {
 #guests {
 }
 
+#tguests {
+    font-size: 18px;
+}
+
 #paidby {
+    font-size: 16px;
+}
+
+#femail {
     font-size: 18px;
 }
 
 #fpaidby {
-    font-size: 16px;
+    font-size: 14px;
+}
+
+#fcurrency {
+    font-size: 14px;
 }
 
 .rightjustified {
     text-align: right;
+}
+
+.lefty {
+    text-align: right;
+}
+.righty {
+    text-align: left;
 }
 

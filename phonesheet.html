@@ -14,9 +14,9 @@ var gCurrency = null;
 
 var gSummaryWhat = "";
 var gSummaryAmount = "";
-var gSummaryCurrencyUsed = "";
+var gSummaryCurrencyUsed = null;
 var gSummaryPaidBy = "";
-var gSummaryGuests = [];
+var gSummaryGuests = null;
 
 function ParseJSON(value)
 {
@@ -30,12 +30,39 @@ function ParseJSON(value)
   return "";
 }
 
+function GetCurrencyName(c)
+{
+    var a = c.split(',');
+    return a[0];
+}
+
+function GetCurrencyFactor(c)
+{
+    var a = c.split(',');
+    return parseFloat(a[1]);
+}
+
+function UpdateGuests()
+{
+    gSummaryGuests = new Set();
+
+    for (var i=0; i<gGroups.length; i++) {
+	var who = gGroups[i].who;
+	for (var j in who) {
+	    var el = document.getElementById("CB_"+j);
+	    if (el && el.checked) {
+		gSummaryGuests.add(j.toLowerCase());
+	    }
+	}
+    }
+}
+
 function EmailBody(what, amount, currencyUsed, paygroup, groupshares)
 {
     var body = {};
     var result = gTemplate.slice();
-    result[0] = what + " (" + currencyUsed + ")";
-    result[1] = amount;
+    result[0] = what + " (" + GetCurrencyName(currencyUsed) + ")";
+    result[1] = amount * GetCurrencyFactor(currencyUsed);
     if (paygroup >= 0) {
 	result[gGroups[paygroup].index[1]] = gTotal;
     }
@@ -99,16 +126,32 @@ function EmailHTML(what, amount, currencyUsed, paidby, guests)
     var body = EmailBody(what, amount, currencyUsed,
 			 paygroup, groupshares);
 
-    var total = "<a target=\"_blank\" href=\"mailto:" + toperson;
+    var total = "<a id=\"femail\" target=\"_blank\" href=\"mailto:" + toperson;
     total += "?subject=" + subject;
     total += "&amp;body=" + encodeURIComponent(JSON.stringify(body));
-    total += "\">Submit</a>";
+    total += "\">That sounds good - submit it</a>";
     return total;
+}
+
+function IsThereEnoughInput()
+{
+    return gSummaryWhat && gSummaryAmount && gSummaryPaidBy && gSummaryGuests;
+}
+
+function CallbackCurrency(cntrl)
+{
+    gSummaryCurrencyUsed = cntrl.value;
+    if (IsThereEnoughInput()) {
+	var el = document.getElementById("done");
+	el.setAttribute('style', 'display:block');
+    }
 }
 
 function CallbackWhat(cntrl)
 {
-    if (true || IsThereEnoughInput()) {
+    gSummaryWhat = cntrl.value;
+
+    if (IsThereEnoughInput()) {
 	var el = document.getElementById("done");
 	el.setAttribute('style', 'display:block');
     }
@@ -116,7 +159,8 @@ function CallbackWhat(cntrl)
 
 function CallbackAmount(cntrl)
 {
-    if (true || IsThereEnoughInput()) {
+    gSummaryAmount = parseFloat(cntrl.value);
+    if (IsThereEnoughInput()) {
 	var el = document.getElementById("done");
 	el.setAttribute('style', 'display:block');
     }
@@ -124,126 +168,98 @@ function CallbackAmount(cntrl)
 
 function CallbackPaidBy(cntrl)
 {
-    if (true || IsThereEnoughInput()) {
+    gSummaryPaidBy = cntrl.value;
+    if (IsThereEnoughInput()) {
 	var el = document.getElementById("done");
 	el.setAttribute('style', 'display:block');
     }
 }
 
-function BuildControlsGuests()
+function BuildControlsGuests(into)
 {
-    var perrow = 2;
-    var percell = 2;
-    var total = "<table width=\"100%\">";
-    total += "<tr><td class=\"rightjustified\">Who was all there?</td><td>&nbsp;</td></tr>";
+    var across = 3;
+    var count = 0;
 
-    var cells = 0;
-    var items = 0;
+    // var total = "<br><span id=\"tguests\">Guests</span>";
+    var total = "<hr>";
 
+    total += "<table width=\"100%\" id=\"fguests\">";
     for (var i=0; i<gGroups.length; i++) {
 	var who = gGroups[i].who;
-	var whosize = 0;
 	for (var j in who) {
-	    whosize ++;
-	}
-
-	items = 0;
-	for (var j in who) {
-	    if (items == 0) {
-		if (cells % perrow == 0) {
-		    total += "<tr>";
-		}
-		if (cells % perrow == 0) {
-		    total += "<td class=\"rightjustified\">";
-		} else {
-		    total += "<td>";
-		}
-	    } else if (whosize > 3 && items % percell == 0) {
-		if (cells % perrow == 0) {
-		    total += "<td class=\"rightjustified\">";
-		} else {
-		    total += "<td>";
-		}
+	    if (count % across == 0) {
+		total += "<tr>";
 	    }
-	    total += "<input checked type=\"checkbox\" value=\"" + j + "," + who[j] + "\">" + j + "</input>";
-	    items ++;
-
-	    if (whosize > 3 && items % percell == 0) {
-		total += "</td>";
-		cells ++;
+	    total += "<td><input checked id=\"CB_" + j + "\" type=\"checkbox\" value=\"" + j + "," + who[j] + "\">" + j + "</input></td>";
+	    count ++;
+	    if (count % across == 0) {
+		total += "</tr>";
 	    }
-	}
-	if (whosize < 4 || items % percell > 0) {
-	    total += "</td>";
-	    cells ++;
-	}
-	if (cells % perrow == 0) {
-	    total += "</tr>";
 	}
     }
-
     total += "</table>";
     return total;
 }
 
-function BuildControlsWhat()
+function BuildControlsWhat(into)
 {
-    var total = "";
-    total += "<table width=\"100%\">";
-    total += "<tr>";
-    total += "<td class=\"rightjustified\" width=\"50%\">Where were we?</td>";
-    total += "<td>";
+    var lefty = "Where?";
 
-    total += "<input type=\"text\" size=\"100%\"onchange=\"CallbackWhat(this)\" id=\"famount\">";
-    total += "</input>";
-    total += "</td></tr></table>";
-    return total;
+    var righty = "<input type=\"text\" onchange=\"CallbackWhat(this)\" id=\"famount\">";
+    righty += "</input>";
+
+    into.push([lefty, righty]);
 }
 
-function BuildControlsAmount()
+function BuildControlsAmount(into)
 {
-    var total = "";
-    total += "<table width=\"100%\">";
-    total += "<tr>";
-    total += "<td class=\"rightjustified\" width=\"50%\">How much did we pay?</td>";
-    total += "<td>";
+    var lefty = "How much?";
 
-    total += "<input type=\"number\" onchange=\"CallbackAmount(this)\" id=\"famount\">";
-    total += "</input>";
+    var righty = "<input type=\"number\" onchange=\"CallbackAmount(this)\" id=\"famount\">";
+    righty += "</input>&nbsp;";
 
-    total += "<select onchange=\"CallbackCurrency(this)\" id=\"fcurrency\">";
+    righty += "<select onchange=\"CallbackCurrency(this)\" id=\"fcurrency\">";
     for (var i in gCurrency) {
 	if (gCurrency[i] == 1) {
-	    total += "<option selected value=\"" + i + "," + gCurrency[i] + "\">" + i + "</option>";
+	    righty += "<option selected value=\"" + i + "," + gCurrency[i] + "\">" + i + "</option>";
 	} else {
-	    total += "<option value=\"" + i + "," + gCurrency[i] + "\">" + i + "</option>";
+	    righty += "<option value=\"" + i + "," + gCurrency[i] + "\">" + i + "</option>";
 	}
     }
-    total += "</select>";
-    total += "</td></tr></table>";
-    return total;
+    righty += "</select>";
+
+    into.push([lefty, righty]);
 }
 
-function BuildControlsPaidBy()
+function BuildControlsPaidBy(into)
 {
-    var total = "";
-    total += "<table width=\"100%\">";
-    total += "<tr>";
-    total += "<td class=\"rightjustified\" width=\"50%\">Who paid?</td>";
-    total += "<td>";
+    var lefty = "Who paid?";
 
-    total += "<select onchange=\"CallbackPaidBy(this)\" id=\"fpaidby\">";
-    total += "<option value=\"\" selected=\"selected\">I did</option>";
+    var righty = "<select onchange=\"CallbackPaidBy(this)\" id=\"fpaidby\">";
+    righty += "<option value=\"sender\" selected=\"selected\">I did</option>";
     for (var i=0; i<gGroups.length; i++) {
 	var who = gGroups[i].who;
 	for (var j in who) {
 	    if (who[j] >= 1) {
-		total += "<option value=\"" + j.toLowerCase() + "\">" + j + "</option>";
+		righty += "<option value=\"" + j + "\">" + j + "</option>";
 	    }
 	}
     }
-    total += "</select>";
-    total += "</td></tr></table>";
+    righty += "</select>";
+
+    return into.push([lefty, righty]);
+}
+
+function BuildTable(into)
+{
+    var total = "<table width=\"100%\">\n";
+    for (var i=0; i<into.length; i++) {
+	total += "<tr>";
+	total += "<td class=\"lefty\" width=\"30%\">" + into[i][0] + "</td>";
+	total += "<td class=\"righty\" width=\"70%\">" + into[i][1] + "</td>";
+	total += "</tr>\n";
+    }
+    total += "</table>\n";
     return total;
 }
 
@@ -251,31 +267,38 @@ function BuildControls()
 {
     document.getElementById("trip").innerHTML = gTrip;
 
-    document.getElementById("what").innerHTML = BuildControlsWhat();
-    document.getElementById("amount").innerHTML = BuildControlsAmount();
-    document.getElementById("guests").innerHTML = BuildControlsGuests();
-    document.getElementById("paidby").innerHTML = BuildControlsPaidBy();
+    var into = [];
+
+    BuildControlsWhat(into);
+    BuildControlsAmount(into);
+    BuildControlsPaidBy(into);
+    document.getElementById("controls").innerHTML =
+	BuildTable(into) + BuildControlsGuests();
 }
 
 function BuildSummary()
 {
-    return "SUMMARY";
+    UpdateGuests();
+
+    var total = "";
+    for (let i of gSummaryGuests) {
+	if (total) {
+	    total += ", ";
+	}
+	total += i[0].toUpperCase() + i.substring(1);
+    }
+
+    total += " went to " + gSummaryWhat + ".  Then, ";
+    total += gSummaryPaidBy + " paid " + gSummaryAmount;
+    total += " (" + GetCurrencyName(gSummaryCurrencyUsed) + ") for those " + gSummaryGuests.size + " people.";
+    return total;
 }
 
 function BuildEmail()
 {
-    var what = "Reka";
-    var amount = 324.23;
-    var currencyUsed = "Euro";
-    var paidby = "Milan";
-    var guests = new Set(["norma", "peter", "sasha", "milan", "ceca", "ryan", "sholto", "vanja", "bojan", "nikki", "zuzana"]);
-
-    return EmailHTML(what, amount, currencyUsed, paidby, guests);
-}
-
-function IsThereEnoughInput()
-{
-    return gSummaryWhat && gSummaryAmount && gSummaryPaidBy && gSummaryGuests.length > 0;
+    UpdateGuests();
+    return EmailHTML(gSummaryWhat, gSummaryAmount, gSummaryCurrencyUsed,
+		     gSummaryPaidBy, gSummaryGuests);
 }
 
 function DoDone()
@@ -321,6 +344,26 @@ function DoReset()
     el.setAttribute('style', 'display:block');
 }
 
+function SetupDefaults()
+{
+    gSummaryPaidBy = "sender";
+    gSummaryGuests = new Set();
+
+    for (var i=0; i<gGroups.length; i++) {
+	var who = gGroups[i].who;
+	for (var j in who) {
+	    gSummaryGuests.add(j.toLowerCase());
+	}
+    }
+
+    gSummaryCurrencyUsed = "CAD,1";
+    for (var i in gCurrency) {
+	if (gCurrency[i] == 1) {
+	    gSummaryCurrencyUsed = "" + i + ",1";
+	}
+    }
+}
+
 function ScriptCallback(jsonIn)
 {
     // Need the gsx$body for template and currency and total, and
@@ -336,6 +379,7 @@ function ScriptCallback(jsonIn)
     gGroups = what.groups;
 
     BuildControls();
+    SetupDefaults();
 }
 </script>
 </head>
@@ -345,10 +389,6 @@ function ScriptCallback(jsonIn)
 <div id="racun">рачун</div>
 <div id="trip"></div>
 <div id="controls">
- <div id="what"></div>
- <div id="amount"></div>
- <div id="guests"></div>
- <div id="paidby"></div>
 </div>
 <div id="summary">
 </div>
