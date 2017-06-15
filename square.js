@@ -55,6 +55,10 @@ function ForReceipt(id, link)
 
 function ForSingleOne(entry)
 {
+    var merchant = GetValue(entry, map.merchant.item, "");
+    if (!merchant) {
+	return "";
+    }
     var which = GetValue(entry, map.which.item, "");
     var when = GetValue(entry, map.when.item, "when");
     var device = GetValue(entry, map.device.item, "device");
@@ -84,6 +88,11 @@ function ForSingleOne(entry)
 
 function ForSingleType(entry, what)
 {
+    var merchant = GetValue(entry, map.merchant.item, "");
+    if (!merchant) {
+	return "";
+    }
+
     var when = GetValue(entry, map.when.item, "when");
     var id = GetValue(entry, map.id.item, "id");
     var url = GetValue(entry, map.url.item, "");
