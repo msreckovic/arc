@@ -141,34 +141,8 @@ function FillRegattas(regattas)
 function TemplateEmailBody()
 {
     var total = "";
-    //	total += "We are in partial cold water rules.  If you don't have a dedicated coach boat following you, make sure one is set up on the dock and ready to go.%3Cbr%3E";
     total += "";
-    total += "I have you down as crew captain for this boat allocation:\n\n\n";
-
-    total += "4x Dynamic:%3Cbr%3E";
-    total += "Monday 6:30-8:30pm%0A";
-    total += "Wednesday 6:30-8:30pm%0A";
-    total += "Saturday 8-10am%0A";
-
-    total += "Your crew captain responsibilities also include to (please :)";
-
-    total += "Verify with the membership director that all your crew members are ARC members.";
-    total += "If you need an exception to this rule, you can use a guest row ($25, and a filled waiver) or request an exemption from the club captain.";
-    total += "Make sure you, or your delegate, checks the condition of the boat (and related equipment) before and after the row.";
-    total += "Make sure the boat is in its allocated rack space";
-    total += "Report anything missing or in need of repairs or attention to the club captain.";
-    total += "Report any on water collisions or equipment damage to the club captain.";
-    total += "Report a transfer of crew captainship to another person to the club captain.";
-    total += "Report any changes to the schedule to the club captain.  We cannot afford to allocate and not use boats.  If you are not planning on using all of these allocations, report it.";
-    total += "";
-    total += "";
-    total += "Please verify that the boat allocation page is properly recording this allocation, and keep checking it for changes.";
-    total += "";
-    total += "Any other questions and comments, contact the club captain.";
-    total += "";
-    total += "CC-ed COACHCOORDINATOR as this is vaguely associated with PROGRAM";
-    total += "";
-    total += "(See club rules linked off this page for the definition of the crew captain.)";
+    total += "Please list which boat(s) and time(s) you are requesting.\n\n\n";
     return total;
 }
 
@@ -217,7 +191,7 @@ function CreateHeader(across, where, regattas, yahoo)
 		       "Boat%20Allocation%20Request",
 		       "<h4 class=\"normalClassARC\">Click to request a boat allocation</h4>",
 		       yahoo);
-    total += "<h4 class=\"normalClassARC\"><a href=\"http://srecko.ca/ARC/status.html\">Please only use the allocated equipment.</a></h4>";
+    total += "<h4 class=\"normalClassARC\"><a href=\"status.html\">Please only use the allocated equipment.</a></h4>";
     total += "</td>";
     if (!across) {
 	total += "</tr><tr>";

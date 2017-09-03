@@ -31,7 +31,7 @@ function GetCurrencyName(c)
 function GetCurrencyFactor(c)
 {
     var a = c.split(',');
-    return parseFloat(a[1]);
+    return parseFloat(a[1].replace(/,/g,''));
 }
 
 function UpdateGuests()
@@ -100,7 +100,7 @@ function SharesFromGuests(guestlist)
 	for (var j in gGroups[i].who) {
 	    var who = j.toLowerCase();
 	    if (guestlist.has(who)) {
-		sum += parseFloat(gGroups[i].who[j]);
+		sum += parseFloat(gGroups[i].who[j].replace(/,/g,''));
 	    }
 	}
 	groupshares.push(sum);
@@ -151,7 +151,7 @@ function CallbackWhat(cntrl)
 
 function CallbackAmount(cntrl)
 {
-    gSummaryAmount = parseFloat(cntrl.value);
+    gSummaryAmount = parseFloat(cntrl.value.replace(/,/g,''));
     if (IsThereEnoughInput()) {
 	var el = document.getElementById("done");
 	el.setAttribute('style', 'display:block');

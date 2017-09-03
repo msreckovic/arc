@@ -1,5 +1,5 @@
 AllTheTrips =
-[ {"fTripName" : "",
+[ {"fTripRaw" : "",
    "fTripCities" : "",
    "fTripDate" : "",
    "fTripTemp" : "",
@@ -133,7 +133,7 @@ function Dump(entry)
 
 function TripStart(entry)
 {
-    return  {"fTripName" : GetValue(entry,map[0]),
+    return  {"fTripRaw" : GetValue(entry,map[0]),
 	     "fTripCities" : GetValue(entry,map[1]),
 	     "fTripDate" : GetValue(entry,map[2]),
 	     "fTripTemp" : GetValue(entry,map[3]),
@@ -175,7 +175,7 @@ function TeslaTrips(jsonIn)
     // console.log("Found " + entries.length + " entries");
     for (var i=0; i<entries.length; i++) {
 	var first = GetValue(entries[i], map[0]);
-	if (first && first != "depart" && first != "arrive" && first != "dep-arr" && first != "flyby") {
+	if (first == "START" || first == "STARTPLAN") {
 	    if (inTrip) {
 		AllTheTrips.push(single);
 		inTrip = false;
@@ -186,6 +186,10 @@ function TeslaTrips(jsonIn)
 	    }
 	} else if (inTrip) {
 	    single.fTripLegs.push(TripLeg(entries[i]));
+	    if (first == "END" || first == "ENDPLAN") {
+		AllTheTrips.push(single);
+		inTrip = false;
+	    }
 	} else {
 	    console.log("This is weird, and should not happen");
 	}
@@ -202,9 +206,8 @@ function FillInSingle(trip, choice)
     total += "<table>";
     total += " <tr>";
     total += "  <th colspan=\"2\" class=\"tripper\">";
-    total += trip.fTripName + "<br>" +
-	trip.fTripCities + "<br>" +
-	trip.fTripDate + ", " + trip.fTripTemp;
+    total += trip.fTripCities + "<br>" +
+             trip.fTripDate + ", " + trip.fTripTemp;
     total += "  </th>";
     var jj;
     for (jj=0; jj<Headers[choice].length; jj+=1) {

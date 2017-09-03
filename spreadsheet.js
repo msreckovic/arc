@@ -24,14 +24,14 @@ function ForAmount(amount)
     var summary = "    <td data-label=Verdict>";
 
     var asInt = parseInt(amount, 10);
-  if (asInt < 0) {
-    summary += amount + " (due)</td>\n";
-  } else if (asInt > 0) {
-    summary += amount + " (owes)</td>\n";
-  } else {
-    summary += amount + "&nbsp;</td>\n";
-  }
-  return summary;
+    if (asInt < 0) {
+	summary += amount + " (due)</td>\n";
+    } else if (asInt > 0) {
+	summary += amount + " (owes)</td>\n";
+    } else {
+	summary += amount + "&nbsp;</td>\n";
+    }
+    return summary;
 }
 
 function GetValue(where, what, instead)
@@ -88,7 +88,7 @@ function JsonCallback(jsonIn)
 	    var pd = GetValue(entries[i], map[j].paid, 0);
 	    if (pd) {
 		var val = entries[i][map[j].paid].$t;
-		var am = parseFloat(val.substring(1));
+		var am = parseFloat(val.substring(1).replace(/,/g,''));
 		if (am > 0) {
 		    cur = val[0];
 		    amount += am;
@@ -105,7 +105,9 @@ function JsonCallback(jsonIn)
 	    details += "    <td data-label=Amount>" + cur + amount.toFixed(2) + "</td>\n";
 	    details += "    <td data-label=Paid-By>" + who  + "</td>\n";
 	    for (j=0; j<people.length; j+=1) {
-		if (people[j]) {
+		if (people[j] == 1) {
+		    details += "    <td data-label=" + labels[j] + ">" + cuts[j] + "</td>\n";
+		} else if (people[j] && people[j] != 0) {
 		    details += "    <td data-label=" + labels[j] + ">" + cuts[j] + " (" + people[j] + ")</td>\n";
 		} else {
 		    details += "    <td data-label=" + labels[j] + ">" + cuts[j] + "</td>\n";

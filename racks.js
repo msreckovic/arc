@@ -74,11 +74,11 @@ function FillRacks(elementRacks)
 		countBoats +=1;
 		total +=
 		    name +
-		    "&nbsp;<img height=\"16\" src=\"http://srecko.ca/ARC/images/cat-" + category + ".png\">";
+		    "&nbsp;<img height=\"16\" src=\"images/cat-" + category + ".png\">";
 	    } else {
 		countBoats +=1;
 		total +=
-		    "<img height=\"16\" src=\"http://srecko.ca/ARC/images/cat-" + category + ".png\">&nbsp;" +
+		    "<img height=\"16\" src=\"images/cat-" + category + ".png\">&nbsp;" +
 		    name;
 	    }
 	    total += "</li>\n";
