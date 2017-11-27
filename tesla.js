@@ -170,9 +170,6 @@ function TeslaTrips(jsonIn)
     var entries = jsonIn.feed.entry;
     var inTrip = false;
     var single = "";
-    // console.log("JSON " + JSON.stringify(jsonIn.feed));
-    // console.log("Entries " + entries);
-    // console.log("Found " + entries.length + " entries");
     for (var i=0; i<entries.length; i++) {
 	var first = GetValue(entries[i], map[0]);
 	if (first == "START" || first == "STARTPLAN") {
@@ -217,7 +214,16 @@ function FillInSingle(trip, choice)
     total += " </tr>\n";
 
     var leg;
-    for (var i=0; i<trip.fTripLegs.length-1; i+=1) {
+
+    var regularLegs = trip.fTripLegs.length;
+    if (regularLegs > 0) {
+	leg = trip.fTripLegs[regularLegs-1];
+	if (leg[1] == "SUMMARY") {
+	    regularLegs --;
+	}
+    }
+
+    for (var i=0; i<regularLegs; i+=1) {
 	leg = trip.fTripLegs[i];
 	var classeff;
 	total += " <tr>\n";
@@ -257,7 +263,7 @@ function FillInSingle(trip, choice)
     }
 
     // Last one is special, it's the summary:
-    if (trip.fTripLegs.length > 0) {
+    if (regularLegs < trip.fTripLegs.length) {
 	leg = trip.fTripLegs[trip.fTripLegs.length-1];
 	total += " <tr class=\"summary\">\n";
 	total += "  <th class=\"city\" width=\"115px\">" + leg[1] + "</th>\n";
