@@ -216,7 +216,19 @@ function TripLeg(entry)
          ];
 }
 
-function TeslaTrips(jsonIn)
+function TeslaTripsPlan(jsonIn)
+{
+  TeslaTripsCommon(jsonIn);
+  FillInTrips("trip", 0); 
+}
+
+function TeslaTripsMade(jsonIn)
+{
+  TeslaTripsCommon(jsonIn);
+  FillInTrips("trip", 1); 
+}
+
+function TeslaTripsCommon(jsonIn)
 {
   AllTheTrips = [];
   
@@ -264,7 +276,6 @@ function TeslaTrips(jsonIn)
     inTrip = false;
   }
   consolelog("AT THIS POINT " + AllTheTrips.length);
-  FillInTrips("trip", 0); 
 }
 
 function FillInSingle(trip, choice)
